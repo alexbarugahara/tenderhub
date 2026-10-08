@@ -1,0 +1,1661 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                                  String                          @id @default(cuid())
+  name                                String
+  email                               String                          @unique
+  password                            String
+  phone                               String?                         @unique
+  image                               String?
+  emailVerified                       DateTime?
+  role                                UserRole                        @default(VENDOR)
+  status                              UserStatus                      @default(PENDING)
+  passwordResetToken                  String?                         @unique
+  passwordResetExpires                DateTime?
+  createdAt                           DateTime                        @default(now())
+  updatedAt                           DateTime                        @updatedAt
+  accounts                            Account[]
+  applicationActivities               ApplicationActivity[]
+  auditLogs                           AuditLog[]
+  bids                                Bid[]
+  bidDocumentsReviewed                BidDocument[]                   @relation("BidDocumentReviewer")
+  bidRequirementResponsesReviewed     BidRequirementResponse[]        @relation("BidRequirementResponseReviewer")
+  contractActivities                  ContractActivity[]
+  evaluations                         Evaluation[]
+  notifications                       Notification[]
+  organizationMemberships             OrganizationMember[]
+  organizationVerificationsReviewed   OrganizationVerification[]      @relation("OrganizationVerificationReviewer")
+  organizationVerificationChecks      OrganizationVerificationCheck[] @relation("OrganizationVerificationChecker")
+  payments                            Payment[]
+  procurementActivities               ProcurementActivity[]
+  savedSolicitations                  SavedSolicitation[]
+  sessions                            Session[]
+  solicitationActivities              SolicitationActivity[]
+  subscriptions                       Subscription[]
+  changedTenderStatuses               TenderStatusHistory[]
+  vendor                              Vendor?
+  vendorApplication                   VendorApplication?
+  vendorApplicationEvidenceReviews    VendorApplicationEvidence[]     @relation("VendorApplicationEvidenceReviewer")
+  vendorApplicationRequirementReviews VendorApplicationRequirement[]  @relation("VendorApplicationRequirementReviewer")
+  vendorVerificationActions           VendorVerificationAction[]      @relation("VendorVerificationActionPerformer")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Organization {
+  id                 String                    @id @default(cuid())
+  name               String
+  legalName          String?
+  email              String                    @unique
+  phone              String?
+  website            String?
+  address            String?
+  logo               String?
+  description        String?
+  registrationNumber String?
+  taxNumber          String?
+  organizationType   OrganizationType?
+  countryId          String?
+  currencyId         String?
+  verifiedAt         DateTime?
+  createdAt          DateTime                  @default(now())
+  updatedAt          DateTime                  @updatedAt
+  contracts          Contract[]
+  departments        Department[]
+  integrations       Integration[]
+  notices            Notice[]
+  country            Country?                  @relation(fields: [countryId], references: [id])
+  currency           Currency?                 @relation(fields: [currencyId], references: [id])
+  documents          OrganizationDocument[]
+  members            OrganizationMember[]
+  verification       OrganizationVerification?
+  procurements       Procurement[]
+  solicitations      Solicitation[]
+  subscriptions      Subscription[]
+
+  @@index([name])
+  @@index([countryId])
+}
+
+model OrganizationMember {
+  id             String                 @id @default(cuid())
+  organizationId String
+  userId         String
+  role           OrganizationMemberRole @default(MEMBER)
+  departmentId   String?
+  joinedAt       DateTime               @default(now())
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  department     Department?            @relation(fields: [departmentId], references: [id])
+  organization   Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+  @@index([departmentId])
+}
+
+model Department {
+  id             String               @id @default(cuid())
+  organizationId String
+  name           String
+  code           String?
+  description    String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  members        OrganizationMember[]
+  procurements   Procurement[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model OrganizationDocument {
+  id                 String                          @id @default(cuid())
+  organizationId     String
+  name               String
+  category           OrganizationDocumentCategory
+  fileUrl            String
+  mimeType           String?
+  fileSize           Int?
+  status             DocumentStatus                  @default(PENDING)
+  issuedAt           DateTime?
+  expiryDate         DateTime?
+  rejectionReason    String?
+  uploadedAt         DateTime                        @default(now())
+  updatedAt          DateTime                        @updatedAt
+  organization       Organization                    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  verificationChecks OrganizationVerificationCheck[]
+
+  @@index([organizationId])
+  @@index([category])
+  @@index([status])
+  @@index([expiryDate])
+}
+
+model OrganizationComplianceRequirement {
+  id                 String                           @id @default(cuid())
+  code               String                           @unique
+  name               String
+  category           OrganizationVerificationCategory
+  description        String?
+  required           Boolean                          @default(true)
+  validityDays       Int?
+  active             Boolean                          @default(true)
+  createdAt          DateTime                         @default(now())
+  updatedAt          DateTime                         @updatedAt
+  verificationChecks OrganizationVerificationCheck[]
+
+  @@index([category])
+  @@index([active])
+  @@index([required])
+}
+
+model OrganizationVerification {
+  id              String                          @id @default(cuid())
+  organizationId  String                          @unique
+  status          OrganizationVerificationStatus  @default(NOT_SUBMITTED)
+  submittedAt     DateTime?
+  reviewedAt      DateTime?
+  reviewedById    String?
+  rejectionReason String?
+  adminNotes      String?
+  createdAt       DateTime                        @default(now())
+  updatedAt       DateTime                        @updatedAt
+  organization    Organization                    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  reviewedBy      User?                           @relation("OrganizationVerificationReviewer", fields: [reviewedById], references: [id])
+  checks          OrganizationVerificationCheck[]
+
+  @@index([status])
+  @@index([reviewedById])
+}
+
+model OrganizationVerificationCheck {
+  id             String                              @id @default(cuid())
+  verificationId String
+  code           String
+  name           String
+  category       OrganizationVerificationCategory
+  description    String?
+  required       Boolean                             @default(true)
+  status         OrganizationVerificationCheckStatus @default(PENDING)
+  documentId     String?
+  checkedAt      DateTime?
+  checkedById    String?
+  notes          String?
+  createdAt      DateTime                            @default(now())
+  updatedAt      DateTime                            @updatedAt
+  requirementId  String?
+  checkedBy      User?                               @relation("OrganizationVerificationChecker", fields: [checkedById], references: [id])
+  document       OrganizationDocument?               @relation(fields: [documentId], references: [id])
+  requirement    OrganizationComplianceRequirement?  @relation(fields: [requirementId], references: [id])
+  verification   OrganizationVerification            @relation(fields: [verificationId], references: [id], onDelete: Cascade)
+
+  @@unique([verificationId, code])
+  @@index([verificationId])
+  @@index([requirementId])
+  @@index([status])
+  @@index([category])
+  @@index([documentId])
+  @@index([checkedById])
+}
+
+model Vendor {
+  id                   String                 @id @default(cuid())
+  userId               String                 @unique
+  companyName          String
+  legalName            String?
+  description          String?
+  email                String?
+  phone                String?
+  website              String?
+  address              String?
+  registrationNumber   String?
+  taxNumber            String?
+  countryId            String?
+  businessType         String?
+  companyTypeId        String?
+  industryId           String?
+  numberOfEmployees    Int?
+  yearsOperating       Int?
+  operatingLocations   String?
+  portfolioDescription String?
+  verifiedAt           DateTime?
+  requirementSetId     String?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  awards               Award[]
+  bids                 Bid[]
+  contracts            Contract[]
+  savedSolicitations   SavedSolicitation[]
+  country              Country?               @relation(fields: [countryId], references: [id])
+  companyType          VendorCompanyType?     @relation(fields: [companyTypeId], references: [id])
+  industry             VendorIndustry?        @relation(fields: [industryId], references: [id])
+  requirementSet       VendorRequirementSet?  @relation(fields: [requirementSetId], references: [id])
+  user                 User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  certifications       VendorCertification[]
+  classifications      VendorClassification[]
+  documents            VendorDocument[]
+  teamMembers          VendorTeamMember[]
+
+  @@index([companyName])
+  @@index([countryId])
+  @@index([requirementSetId])
+  @@index([companyTypeId])
+  @@index([industryId])
+}
+
+model VendorTeamMember {
+  id        String   @id @default(cuid())
+  vendorId  String
+  name      String
+  email     String?
+  phone     String?
+  position  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vendor    Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+}
+
+model VendorDocument {
+  id              String           @id @default(cuid())
+  vendorId        String
+  name            String
+  category        DocumentCategory
+  fileUrl         String
+  mimeType        String?
+  fileSize        Int?
+  status          DocumentStatus   @default(PENDING)
+  issuedAt        DateTime?
+  expiryDate      DateTime?
+  rejectionReason String?
+  uploadedAt      DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  vendor          Vendor           @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+  @@index([category])
+  @@index([expiryDate])
+}
+
+model VendorCertification {
+  id                String    @id @default(cuid())
+  vendorId          String
+  name              String
+  issuingBody       String?
+  certificateNumber String?
+  issuedAt          DateTime?
+  expiryDate        DateTime?
+  fileUrl           String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  vendor            Vendor    @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+  @@index([expiryDate])
+}
+
+model VendorClassification {
+  id               String         @id @default(cuid())
+  vendorId         String
+  classificationId String
+  isPrimary        Boolean        @default(false)
+  classification   Classification @relation(fields: [classificationId], references: [id], onDelete: Cascade)
+  vendor           Vendor         @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, classificationId])
+  @@index([vendorId])
+  @@index([classificationId])
+}
+
+model VendorApplication {
+  id                   String                         @id @default(cuid())
+  userId               String                         @unique
+  requirementSetId     String?
+  status               VendorApplicationStatus        @default(DRAFT)
+  companyName          String?
+  legalName            String?
+  description          String?
+  email                String?
+  phone                String?
+  website              String?
+  address              String?
+  registrationNumber   String?
+  taxNumber            String?
+  countryId            String?
+  businessType         String?
+  companyTypeId        String?
+  industryId           String?
+  numberOfEmployees    Int?
+  yearsOperating       Int?
+  operatingLocations   String?
+  portfolioDescription String?
+  submittedAt          DateTime?
+  reviewedAt           DateTime?
+  approvedAt           DateTime?
+  rejectedAt           DateTime?
+  adminNotes           String?
+  rejectionReason      String?
+  createdAt            DateTime                       @default(now())
+  updatedAt            DateTime                       @updatedAt
+  country              Country?                       @relation(fields: [countryId], references: [id])
+  companyType          VendorCompanyType?             @relation(fields: [companyTypeId], references: [id])
+  industry             VendorIndustry?                @relation(fields: [industryId], references: [id])
+  requirementSet       VendorRequirementSet?          @relation(fields: [requirementSetId], references: [id])
+  user                 User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  evidence             VendorApplicationEvidence[]
+  requirements         VendorApplicationRequirement[]
+  actions              VendorVerificationAction[]
+
+  @@index([status])
+  @@index([countryId])
+  @@index([requirementSetId])
+  @@index([submittedAt])
+  @@index([companyTypeId])
+  @@index([industryId])
+}
+
+model VendorRequirement {
+  id                        String                            @id @default(cuid())
+  code                      String                            @unique
+  name                      String
+  description               String?
+  purpose                   String?
+  category                  ComplianceCategory
+  required                  Boolean                           @default(true)
+  validityDays              Int?
+  active                    Boolean                           @default(true)
+  allowedDocumentCategories DocumentCategory[]                @default([])
+  createdAt                 DateTime                          @default(now())
+  updatedAt                 DateTime                          @updatedAt
+  applicationRequirements   VendorApplicationRequirement[]
+  requirementSets           VendorRequirementSetRequirement[]
+  rules                     VendorRequirementRule[]
+
+  @@index([category])
+  @@index([active])
+  @@index([required])
+}
+
+model VendorCompanyType {
+  id               String                  @id @default(cuid())
+  code             String                  @unique
+  name             String
+  description      String?
+  active           Boolean                 @default(true)
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  requirementSets  VendorRequirementSet[]
+  requirementRules VendorRequirementRule[]
+  vendors          Vendor[]
+  applications     VendorApplication[]
+
+  @@index([active])
+}
+
+model VendorIndustry {
+  id               String                  @id @default(cuid())
+  code             String                  @unique
+  name             String
+  description      String?
+  active           Boolean                 @default(true)
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  requirementSets  VendorRequirementSet[]
+  requirementRules VendorRequirementRule[]
+  vendors          Vendor[]
+  applications     VendorApplication[]
+
+  @@index([active])
+}
+
+model VendorRequirementRule {
+  id                        String             @id @default(cuid())
+  companyTypeId             String
+  industryId                String
+  requirementId             String
+  required                  Boolean            @default(true)
+  purpose                   String?
+  allowedDocumentCategories DocumentCategory[] @default([])
+  priority                  Int                @default(100)
+  active                    Boolean            @default(true)
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+
+  companyType VendorCompanyType @relation(fields: [companyTypeId], references: [id], onDelete: Cascade)
+  industry    VendorIndustry    @relation(fields: [industryId], references: [id], onDelete: Cascade)
+  requirement VendorRequirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+
+  @@unique([companyTypeId, industryId, requirementId])
+  @@index([companyTypeId])
+  @@index([industryId])
+  @@index([requirementId])
+  @@index([active])
+}
+
+model VendorRequirementSet {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  name          String
+  description   String?
+  active        Boolean  @default(true)
+  companyTypeId String?
+  industryId    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  companyType  VendorCompanyType?                @relation(fields: [companyTypeId], references: [id], onDelete: SetNull)
+  industry     VendorIndustry?                   @relation(fields: [industryId], references: [id], onDelete: SetNull)
+  vendors      Vendor[]
+  applications VendorApplication[]
+  requirements VendorRequirementSetRequirement[]
+
+  @@index([active])
+  @@index([companyTypeId])
+  @@index([industryId])
+}
+
+model VendorRequirementSetRequirement {
+  id                        String             @id
+  requirementSetId          String
+  requirementId             String
+  required                  Boolean            @default(true)
+  active                    Boolean            @default(true)
+  purpose                   String?
+  allowedDocumentCategories DocumentCategory[] @default([])
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+
+  requirement    VendorRequirement    @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+  requirementSet VendorRequirementSet @relation(fields: [requirementSetId], references: [id], onDelete: Cascade)
+
+  @@unique([requirementSetId, requirementId])
+  @@index([requirementSetId])
+  @@index([requirementId])
+  @@index([active])
+  @@index([required])
+}
+
+model VendorApplicationRequirement {
+  id                        String                             @id
+  applicationId             String
+  requirementId             String
+  code                      String
+  name                      String
+  description               String?
+  purpose                   String?
+  category                  ComplianceCategory
+  required                  Boolean                            @default(true)
+  allowedDocumentCategories DocumentCategory[]                 @default([])
+  status                    VendorApplicationRequirementStatus @default(OUTSTANDING)
+  notes                     String?
+  reviewedAt                DateTime?
+  reviewedById              String?
+  createdAt                 DateTime                           @default(now())
+  updatedAt                 DateTime                           @updatedAt
+
+  evidence    VendorApplicationEvidence[]
+  application VendorApplication           @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  requirement VendorRequirement           @relation(fields: [requirementId], references: [id])
+  reviewedBy  User?                       @relation("VendorApplicationRequirementReviewer", fields: [reviewedById], references: [id])
+
+  @@unique([applicationId, requirementId])
+  @@index([applicationId])
+  @@index([requirementId])
+  @@index([status])
+  @@index([reviewedById])
+}
+
+model VendorApplicationEvidence {
+  id              String               @id @default(cuid())
+  applicationId   String
+  requirementId   String?
+  name            String
+  category        DocumentCategory
+  fileUrl         String
+  mimeType        String?
+  fileSize        Int?
+  fileHash        String?
+  status          VendorEvidenceStatus @default(PENDING)
+  issuedAt        DateTime?
+  expiryDate      DateTime?
+  rejectionReason String?
+  uploadedAt      DateTime             @default(now())
+  reviewedAt      DateTime?
+  reviewedById    String?
+
+  application VendorApplication             @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  requirement VendorApplicationRequirement? @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+  reviewedBy  User?                         @relation("VendorApplicationEvidenceReviewer", fields: [reviewedById], references: [id])
+
+  @@unique([applicationId, fileHash])
+  @@index([applicationId])
+  @@index([requirementId])
+  @@index([category])
+  @@index([status])
+  @@index([expiryDate])
+  @@index([reviewedById])
+}
+
+model VendorVerificationAction {
+  id            String                       @id @default(cuid())
+  applicationId String
+  performedById String
+  action        VendorVerificationActionType
+  reason        String?
+  notes         String?
+  createdAt     DateTime                     @default(now())
+
+  application VendorApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  performedBy User              @relation("VendorVerificationActionPerformer", fields: [performedById], references: [id])
+
+  @@index([applicationId])
+  @@index([performedById])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Country {
+  id                 String              @id @default(cuid())
+  code               String              @unique
+  name               String              @unique
+  currencyCode       String?
+  active             Boolean             @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  currency           Currency?           @relation(fields: [currencyCode], references: [code])
+  organizations      Organization[]
+  procurements       Procurement[]
+  vendors            Vendor[]
+  vendorApplications VendorApplication[]
+}
+
+model Currency {
+  id               String            @id @default(cuid())
+  code             String            @unique
+  name             String
+  symbol           String?
+  decimals         Int               @default(2)
+  active           Boolean           @default(true)
+  bids             Bid[]
+  contractPayments ContractPayment[]
+  countries        Country[]
+  organizations    Organization[]
+  payments         Payment[]
+  procurements     Procurement[]
+  solicitations    Solicitation[]
+}
+
+model Classification {
+  id                          String                       @id @default(cuid())
+  code                        String
+  name                        String
+  description                 String?
+  type                        ClassificationType
+  parentId                    String?
+  createdAt                   DateTime                     @default(now())
+  updatedAt                   DateTime                     @updatedAt
+  parent                      Classification?              @relation("ClassificationHierarchy", fields: [parentId], references: [id])
+  children                    Classification[]             @relation("ClassificationHierarchy")
+  solicitationClassifications SolicitationClassification[]
+  vendorClassifications       VendorClassification[]
+
+  @@unique([type, code])
+  @@index([type])
+  @@index([parentId])
+}
+
+model Procurement {
+  id                String                @id @default(cuid())
+  organizationId    String
+  departmentId      String?
+  countryId         String?
+  currencyId        String?
+  title             String
+  description       String?
+  referenceNumber   String                @unique
+  status            ProcurementStatus     @default(DRAFT)
+  procurementMethod ProcurementMethod     @default(OPEN)
+  estimatedValue    Decimal?              @db.Decimal(18, 2)
+  plannedStartDate  DateTime?
+  plannedEndDate    DateTime?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  country           Country?              @relation(fields: [countryId], references: [id])
+  currency          Currency?             @relation(fields: [currencyId], references: [id])
+  department        Department?           @relation(fields: [departmentId], references: [id])
+  organization      Organization          @relation(fields: [organizationId], references: [id])
+  activities        ProcurementActivity[]
+  solicitations     Solicitation[]
+
+  @@index([organizationId])
+  @@index([departmentId])
+  @@index([status])
+  @@index([countryId])
+}
+
+model Solicitation {
+  id                     String                       @id @default(cuid())
+  procurementId          String
+  organizationId         String
+  currencyId             String?
+  solicitationNumber     String                       @unique
+  title                  String
+  description            String
+  status                 SolicitationStatus           @default(DRAFT)
+  type                   SolicitationType             @default(RFP)
+  procurementMethod      ProcurementMethod            @default(OPEN)
+  publishedAt            DateTime?
+  openingDate            DateTime?
+  closingDate            DateTime?
+  estimatedValue         Decimal?                     @db.Decimal(18, 2)
+  bidSecurityRequired    Boolean                      @default(false)
+  bidSecurityAmount      Decimal?                     @db.Decimal(18, 2)
+  applicationFeeRequired Boolean                      @default(false)
+  applicationFeeAmount   Decimal?                     @db.Decimal(18, 2)
+  createdAt              DateTime                     @default(now())
+  updatedAt              DateTime                     @updatedAt
+  awards                 Award[]
+  bids                   Bid[]
+  evaluationCriteria     EvaluationCriterion[]
+  lots                   Lot[]
+  notices                Notice[]
+  requirements           Requirement[]
+  savedBy                SavedSolicitation[]
+  currency               Currency?                    @relation(fields: [currencyId], references: [id])
+  organization           Organization                 @relation(fields: [organizationId], references: [id])
+  procurement            Procurement                  @relation(fields: [procurementId], references: [id], onDelete: Cascade)
+  activities             SolicitationActivity[]
+  classifications        SolicitationClassification[]
+  documents              SolicitationDocument[]
+
+  @@index([procurementId])
+  @@index([organizationId])
+  @@index([status])
+  @@index([closingDate])
+  @@index([publishedAt])
+}
+
+model Lot {
+  id                 String                @id @default(cuid())
+  solicitationId     String
+  number             Int
+  title              String
+  description        String?
+  estimatedValue     Decimal?              @db.Decimal(18, 2)
+  status             LotStatus             @default(OPEN)
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  awards             Award[]
+  bids               Bid[]
+  evaluationCriteria EvaluationCriterion[]
+  solicitation       Solicitation          @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+  requirements       Requirement[]
+
+  @@unique([solicitationId, number])
+  @@index([solicitationId])
+  @@index([status])
+}
+
+model Requirement {
+  id             String                   @id @default(cuid())
+  solicitationId String?
+  lotId          String?
+  type           RequirementType
+  title          String
+  description    String?
+  isMandatory    Boolean                  @default(true)
+  sortOrder      Int                      @default(0)
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  responses      BidRequirementResponse[]
+  lot            Lot?                     @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  solicitation   Solicitation?            @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+
+  @@index([solicitationId])
+  @@index([lotId])
+  @@index([type])
+}
+
+model SolicitationClassification {
+  id               String         @id @default(cuid())
+  solicitationId   String
+  classificationId String
+  classification   Classification @relation(fields: [classificationId], references: [id], onDelete: Cascade)
+  solicitation     Solicitation   @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+
+  @@unique([solicitationId, classificationId])
+  @@index([solicitationId])
+  @@index([classificationId])
+}
+
+model SolicitationDocument {
+  id             String           @id @default(cuid())
+  solicitationId String
+  name           String
+  category       DocumentCategory
+  fileUrl        String
+  mimeType       String?
+  fileSize       Int?
+  version        Int              @default(1)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  solicitation   Solicitation     @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+
+  @@index([solicitationId])
+}
+
+model Bid {
+  id                   String                   @id @default(cuid())
+  solicitationId       String
+  lotId                String
+  vendorId             String
+  submittedById        String
+  currencyId           String?
+  bidNumber            String                   @unique
+  status               BidStatus                @default(DRAFT)
+  title                String?
+  summary              String?
+  totalAmount          Decimal                  @db.Decimal(18, 2)
+  submittedAt          DateTime?
+  lockedAt             DateTime?
+  withdrawalReason     String?
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  activities           ApplicationActivity[]
+  award                Award?
+  currency             Currency?                @relation(fields: [currencyId], references: [id])
+  lot                  Lot                      @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  solicitation         Solicitation             @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+  submittedBy          User                     @relation(fields: [submittedById], references: [id])
+  vendor               Vendor                   @relation(fields: [vendorId], references: [id])
+  documents            BidDocument[]
+  requirementResponses BidRequirementResponse[]
+  evaluations          Evaluation[]
+
+  @@unique([vendorId, solicitationId, lotId])
+  @@index([solicitationId])
+  @@index([lotId])
+  @@index([vendorId])
+  @@index([status])
+}
+
+model BidDocument {
+  id              String           @id @default(cuid())
+  bidId           String
+  name            String
+  category        DocumentCategory
+  fileUrl         String
+  mimeType        String?
+  fileSize        Int?
+  status          DocumentStatus   @default(PENDING)
+  uploadedAt      DateTime         @default(now())
+  reviewedAt      DateTime?
+  reviewedById    String?
+  rejectionReason String?
+  bid             Bid              @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  reviewedBy      User?            @relation("BidDocumentReviewer", fields: [reviewedById], references: [id])
+
+  @@index([bidId])
+  @@index([category])
+  @@index([status])
+  @@index([reviewedById])
+}
+
+model BidRequirementResponse {
+  id              String      @id @default(cuid())
+  bidId           String
+  requirementId   String
+  response        String?
+  booleanValue    Boolean?
+  numericValue    Decimal?    @db.Decimal(18, 4)
+  evidenceUrl     String?
+  compliant       Boolean?
+  reviewerComment String?
+  reviewedAt      DateTime?
+  reviewedById    String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  bid             Bid         @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  requirement     Requirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+  reviewedBy      User?       @relation("BidRequirementResponseReviewer", fields: [reviewedById], references: [id])
+
+  @@unique([bidId, requirementId])
+  @@index([bidId])
+  @@index([requirementId])
+  @@index([reviewedById])
+}
+
+model EvaluationCriterion {
+  id             String            @id @default(cuid())
+  solicitationId String?
+  name           String
+  description    String?
+  weight         Decimal           @db.Decimal(8, 4)
+  maxScore       Decimal           @default(100) @db.Decimal(8, 2)
+  sortOrder      Int               @default(0)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  lotId          String?
+  lot            Lot?              @relation(fields: [lotId], references: [id], onDelete: Cascade)
+  solicitation   Solicitation?     @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+  scores         EvaluationScore[]
+
+  @@index([solicitationId])
+  @@index([lotId])
+}
+
+model Evaluation {
+  id          String            @id @default(cuid())
+  bidId       String
+  evaluatorId String
+  status      EvaluationStatus  @default(DRAFT)
+  totalScore  Decimal           @default(0) @db.Decimal(10, 4)
+  comments    String?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  bid         Bid               @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  evaluator   User              @relation(fields: [evaluatorId], references: [id])
+  scores      EvaluationScore[]
+
+  @@unique([bidId, evaluatorId])
+  @@index([bidId])
+  @@index([evaluatorId])
+  @@index([status])
+}
+
+model EvaluationScore {
+  id            String              @id @default(cuid())
+  evaluationId  String
+  criterionId   String
+  score         Decimal             @db.Decimal(10, 4)
+  weightedScore Decimal             @db.Decimal(10, 4)
+  comment       String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  criterion     EvaluationCriterion @relation(fields: [criterionId], references: [id], onDelete: Cascade)
+  evaluation    Evaluation          @relation(fields: [evaluationId], references: [id], onDelete: Cascade)
+
+  @@unique([evaluationId, criterionId])
+  @@index([evaluationId])
+  @@index([criterionId])
+}
+
+model Award {
+  id             String       @id @default(cuid())
+  solicitationId String
+  lotId          String
+  bidId          String       @unique
+  vendorId       String
+  awardNumber    String       @unique
+  status         AwardStatus  @default(PENDING)
+  awardAmount    Decimal      @db.Decimal(18, 2)
+  awardDate      DateTime     @default(now())
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  bid            Bid          @relation(fields: [bidId], references: [id])
+  lot            Lot          @relation(fields: [lotId], references: [id])
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id])
+  vendor         Vendor       @relation(fields: [vendorId], references: [id])
+  contract       Contract?
+
+  @@index([solicitationId])
+  @@index([lotId])
+  @@index([vendorId])
+  @@index([status])
+}
+
+model Contract {
+  id                String              @id @default(cuid())
+  awardId           String              @unique
+  vendorId          String
+  organizationId    String?
+  contractNumber    String              @unique
+  title             String
+  description       String?
+  status            ContractStatus      @default(DRAFT)
+  contractValue     Decimal             @db.Decimal(18, 2)
+  startDate         DateTime?
+  endDate           DateTime?
+  signedAt          DateTime?
+  completedAt       DateTime?
+  terminatedAt      DateTime?
+  terminationReason String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  award             Award               @relation(fields: [awardId], references: [id])
+  organization      Organization?       @relation(fields: [organizationId], references: [id])
+  vendor            Vendor              @relation(fields: [vendorId], references: [id])
+  activities        ContractActivity[]
+  documents         ContractDocument[]
+  milestones        ContractMilestone[]
+  payments          ContractPayment[]
+
+  @@index([vendorId])
+  @@index([organizationId])
+  @@index([status])
+  @@index([endDate])
+}
+
+model ContractDocument {
+  id         String           @id @default(cuid())
+  contractId String
+  name       String
+  category   DocumentCategory
+  fileUrl    String
+  mimeType   String?
+  fileSize   Int?
+  createdAt  DateTime         @default(now())
+  contract   Contract         @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId])
+}
+
+model ContractMilestone {
+  id          String          @id @default(cuid())
+  contractId  String
+  title       String
+  description String?
+  dueDate     DateTime?
+  amount      Decimal?        @db.Decimal(18, 2)
+  status      MilestoneStatus @default(PENDING)
+  completedAt DateTime?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  contract    Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@index([contractId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+model ContractPayment {
+  id          String                @id @default(cuid())
+  contractId  String
+  amount      Decimal               @db.Decimal(18, 2)
+  currencyId  String?
+  paymentDate DateTime?
+  status      ContractPaymentStatus @default(PENDING)
+  reference   String?
+  notes       String?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  contract    Contract              @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  currency    Currency?             @relation(fields: [currencyId], references: [id])
+
+  @@index([contractId])
+  @@index([currencyId])
+  @@index([status])
+}
+
+model Notice {
+  id             String        @id @default(cuid())
+  organizationId String?
+  solicitationId String?
+  title          String
+  content        String
+  type           NoticeType    @default(GENERAL)
+  published      Boolean       @default(false)
+  publishedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  solicitation   Solicitation? @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([solicitationId])
+  @@index([published])
+}
+
+model SavedSolicitation {
+  id             String       @id @default(cuid())
+  vendorId       String
+  solicitationId String
+  savedAt        DateTime     @default(now())
+  userId         String?
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+  user           User?        @relation(fields: [userId], references: [id])
+  vendor         Vendor       @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, solicitationId])
+  @@index([vendorId])
+  @@index([solicitationId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      NotificationType @default(INFO)
+  read      Boolean          @default(false)
+  link      String?
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
+  @@index([createdAt])
+}
+
+model Payment {
+  id            String                  @id @default(cuid())
+  userId        String
+  currencyId    String?
+  amount        Decimal                 @db.Decimal(18, 2)
+  reference     String                  @unique
+  transactionId String?
+  type          PaymentType
+  status        PaymentStatus           @default(PENDING)
+  provider      PaymentGatewayProvider?
+  checkoutUrl   String?
+  failureReason String?
+  paidAt        DateTime?
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  currency      Currency?               @relation(fields: [currencyId], references: [id])
+  user          User                    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([currencyId])
+  @@index([status])
+  @@index([type])
+  @@index([transactionId])
+}
+
+model Subscription {
+  id             String             @id @default(cuid())
+  userId         String
+  organizationId String?
+  plan           SubscriptionPlan
+  status         SubscriptionStatus @default(ACTIVE)
+  startDate      DateTime           @default(now())
+  endDate        DateTime?
+  autoRenew      Boolean            @default(false)
+  price          Decimal            @default(0) @db.Decimal(18, 2)
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  organization   Organization?      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([plan])
+  @@index([status])
+}
+
+model Integration {
+  id             String               @id @default(cuid())
+  organizationId String
+  name           String
+  provider       String
+  type           IntegrationType
+  status         IntegrationStatus    @default(INACTIVE)
+  configuration  Json?
+  lastSyncAt     DateTime?
+  lastError      String?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  syncLogs       IntegrationSyncLog[]
+
+  @@unique([organizationId, provider])
+  @@index([organizationId])
+  @@index([status])
+}
+
+model IntegrationSyncLog {
+  id               String                @id @default(cuid())
+  integrationId    String
+  status           IntegrationSyncStatus
+  startedAt        DateTime              @default(now())
+  completedAt      DateTime?
+  recordsProcessed Int                   @default(0)
+  errorMessage     String?
+  integration      Integration           @relation(fields: [integrationId], references: [id], onDelete: Cascade)
+
+  @@index([integrationId])
+  @@index([startedAt])
+}
+
+model ProcurementActivity {
+  id            String      @id @default(cuid())
+  procurementId String
+  performedById String
+  action        String
+  description   String?
+  createdAt     DateTime    @default(now())
+  performedBy   User        @relation(fields: [performedById], references: [id])
+  procurement   Procurement @relation(fields: [procurementId], references: [id], onDelete: Cascade)
+
+  @@index([procurementId])
+  @@index([performedById])
+  @@index([createdAt])
+}
+
+model SolicitationActivity {
+  id             String       @id @default(cuid())
+  solicitationId String
+  performedById  String
+  action         String
+  description    String?
+  createdAt      DateTime     @default(now())
+  performedBy    User         @relation(fields: [performedById], references: [id])
+  solicitation   Solicitation @relation(fields: [solicitationId], references: [id], onDelete: Cascade)
+
+  @@index([solicitationId])
+  @@index([performedById])
+  @@index([createdAt])
+}
+
+model ApplicationActivity {
+  id            String   @id @default(cuid())
+  bidId         String?
+  performedById String
+  action        String
+  description   String?
+  createdAt     DateTime @default(now())
+  bid           Bid?     @relation(fields: [bidId], references: [id], onDelete: Cascade)
+  performedBy   User     @relation(fields: [performedById], references: [id])
+
+  @@index([bidId])
+  @@index([performedById])
+  @@index([createdAt])
+}
+
+model ContractActivity {
+  id            String   @id @default(cuid())
+  contractId    String
+  performedById String
+  action        String
+  description   String?
+  createdAt     DateTime @default(now())
+  contract      Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  performedBy   User     @relation(fields: [performedById], references: [id])
+
+  @@index([contractId])
+  @@index([performedById])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entity      String?
+  entityId    String?
+  description String?
+  ipAddress   String?
+  userAgent   String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  user        User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+model TenderStatusHistory {
+  id             String              @id @default(cuid())
+  solicitationId String?
+  oldStatus      SolicitationStatus?
+  status         SolicitationStatus
+  reason         String?
+  notes          String?
+  changedBy      String
+  createdAt      DateTime            @default(now())
+  changedByUser  User                @relation(fields: [changedBy], references: [id])
+
+  @@index([solicitationId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model News {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  summary   String
+  content   String
+  image     String?
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  ADMIN
+  ORGANIZATION
+  VENDOR
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum VendorStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum VendorApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  NEEDS_INFORMATION
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+enum VendorApplicationRequirementStatus {
+  OUTSTANDING
+  SUBMITTED
+  UNDER_REVIEW
+  SATISFIED
+  REJECTED
+  NEEDS_INFORMATION
+  NOT_APPLICABLE
+}
+
+enum VendorEvidenceStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum VendorVerificationActionType {
+  SUBMITTED
+  STARTED_REVIEW
+  REQUESTED_INFORMATION
+  EVIDENCE_ACCEPTED
+  EVIDENCE_REJECTED
+  REQUIREMENT_SATISFIED
+  REQUIREMENT_REJECTED
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+enum OrganizationMemberRole {
+  OWNER
+  ADMIN
+  PROCUREMENT_MANAGER
+  EVALUATOR
+  FINANCE
+  MEMBER
+}
+
+enum OrganizationType {
+  GOVERNMENT
+  LOCAL_GOVERNMENT
+  NGO
+  INTERNATIONAL_NGO
+  PRIVATE_COMPANY
+  SCHOOL_UNIVERSITY
+  HOSPITAL
+  BANK_FINANCIAL_INSTITUTION
+  DEVELOPMENT_AGENCY
+  OTHER
+}
+
+enum ProcurementStatus {
+  DRAFT
+  PLANNED
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  ARCHIVED
+}
+
+enum ProcurementMethod {
+  OPEN
+  RESTRICTED
+  REQUEST_FOR_QUOTATION
+  DIRECT
+  NEGOTIATED
+}
+
+enum SolicitationType {
+  RFI
+  RFQ
+  RFP
+  IFB
+  ITB
+  OTHER
+}
+
+enum SolicitationStatus {
+  DRAFT
+  PUBLISHED
+  OPEN
+  UNDER_EVALUATION
+  AWARDED
+  CLOSED
+  CANCELLED
+  SUSPENDED
+  ARCHIVED
+}
+
+enum LotStatus {
+  OPEN
+  CLOSED
+  AWARDED
+  CANCELLED
+}
+
+enum RequirementType {
+  ELIGIBILITY
+  TECHNICAL
+  FINANCIAL
+  EXPERIENCE
+  COMPLIANCE
+  DOCUMENT
+  GENERAL
+}
+
+enum BidStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  COMPLIANT
+  NON_COMPLIANT
+  SHORTLISTED
+  EVALUATED
+  WITHDRAWN
+  REJECTED
+  AWARDED
+}
+
+enum EvaluationStatus {
+  DRAFT
+  IN_PROGRESS
+  COMPLETED
+  APPROVED
+}
+
+enum AwardStatus {
+  PENDING
+  APPROVED
+  ACCEPTED
+  DECLINED
+  CANCELLED
+}
+
+enum ContractStatus {
+  DRAFT
+  PENDING_SIGNATURE
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  TERMINATED
+  EXPIRED
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  DELAYED
+  CANCELLED
+}
+
+enum ContractPaymentStatus {
+  PENDING
+  APPROVED
+  PAID
+  FAILED
+  CANCELLED
+}
+
+enum ComplianceCategory {
+  TAX
+  REGISTRATION
+  LICENSING
+  INSURANCE
+  PROFESSIONAL
+  FINANCIAL
+  EXPERIENCE
+  OWNERSHIP
+  OTHER
+}
+
+enum ClassificationType {
+  NAICS
+  PSC
+  UNSPSC
+  CUSTOM
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+}
+
+enum DocumentCategory {
+  COMPANY_REGISTRATION_CERTIFICATE
+  CERTIFICATE_OF_INCORPORATION
+  TAX_IDENTIFICATION_CERTIFICATE
+  TAX_CLEARANCE_CERTIFICATE
+  TRADING_LICENSE
+  COMPANY_PROFILE
+  TECHNICAL_PROPOSAL
+  FINANCIAL_PROPOSAL
+  WORK_PLAN
+  METHODOLOGY
+  EXPERIENCE_CERTIFICATES
+  PREVIOUS_CONTRACTS
+  KEY_PERSONNEL_CV
+  PROFESSIONAL_CERTIFICATIONS
+  QUALITY_CERTIFICATE
+  INSURANCE_CERTIFICATE
+  BANK_ACCOUNT_CONFIRMATION
+  FINANCIAL_STATEMENTS
+  BID_SECURITY
+  MANUFACTURER_AUTHORIZATION
+  REFERENCES
+  SOLICITATION_DOCUMENT
+  CONTRACT_DOCUMENT
+  AWARD_DOCUMENT
+  OTHER
+}
+
+enum OrganizationDocumentCategory {
+  CERTIFICATE_OF_INCORPORATION
+  ARTICLES_OF_INCORPORATION
+  CERTIFICATE_OF_FORMATION
+  BUSINESS_REGISTRATION
+  CERTIFICATE_OF_GOOD_STANDING
+  TAX_IDENTIFICATION
+  TAX_CLEARANCE
+  BUSINESS_LICENSE
+  PROOF_OF_ADDRESS
+  AUTHORIZED_REPRESENTATIVE_ID
+  AUTHORIZATION_LETTER
+  OWNERSHIP_INFORMATION
+  BENEFICIAL_OWNERSHIP
+  GOVERNMENT_REGISTRATION
+  UEI_DOCUMENT
+  SAM_REGISTRATION
+  PROFESSIONAL_LICENSE
+  INSURANCE_CERTIFICATE
+  COMPANY_PROFILE
+  OTHER
+}
+
+enum OrganizationVerificationStatus {
+  NOT_SUBMITTED
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  NEEDS_INFORMATION
+  APPROVED
+  REJECTED
+}
+
+enum OrganizationVerificationCategory {
+  LEGAL_IDENTITY
+  REGISTRATION
+  TAX
+  ADDRESS
+  REPRESENTATIVE
+  OWNERSHIP
+  LICENSING
+  GOVERNMENT_REGISTRATION
+  SANCTIONS_SCREENING
+  SUPPORTING_DOCUMENTATION
+  OTHER
+}
+
+enum OrganizationVerificationCheckStatus {
+  PENDING
+  PASSED
+  FAILED
+  NEEDS_INFORMATION
+  NOT_APPLICABLE
+}
+
+enum NoticeType {
+  GENERAL
+  SOLICITATION
+  ADDENDUM
+  CLARIFICATION
+  AWARD
+  CANCELLATION
+  CONTRACT
+}
+
+enum PaymentType {
+  SUBSCRIPTION
+  APPLICATION_FEE
+  REFUND
+  OTHER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentGatewayProvider {
+  STRIPE
+  FLUTTERWAVE
+  PESAPAL
+  DEMO
+}
+
+enum SubscriptionPlan {
+  ORGANIZATION_STARTER
+  ORGANIZATION_PROFESSIONAL
+  ORGANIZATION_ENTERPRISE
+  VENDOR_FREE
+  VENDOR_PROFESSIONAL
+  VENDOR_PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
+  TRIAL
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
+  SOLICITATION_PUBLISHED
+  SOLICITATION_CLOSING
+  BID_SUBMITTED
+  BID_WITHDRAWN
+  EVALUATION_COMPLETED
+  AWARD_NOTIFICATION
+  CONTRACT_NOTIFICATION
+  COMPLIANCE_EXPIRING
+  COMPLIANCE_EXPIRED
+  PAYMENT_RECEIVED
+}
+
+enum IntegrationType {
+  PROCUREMENT_PLATFORM
+  ACCOUNTING
+  ERP
+  PAYMENT
+  IDENTITY
+  GOVERNMENT
+  OTHER
+}
+
+enum IntegrationStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+  SUSPENDED
+}
+
+enum IntegrationSyncStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}

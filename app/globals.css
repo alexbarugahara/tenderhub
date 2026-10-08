@@ -1,0 +1,2097 @@
+@import "tailwindcss";
+
+
+/* ==========================================================
+   TAILWIND V4 — TENDERHUB BRAND COLORS
+========================================================== */
+
+@theme {
+
+  --color-tenderhub-navy: #071A33;
+  --color-tenderhub-navy-dark: #07132e;
+  --color-tenderhub-navy-light: #0D2545;
+
+  --color-tenderhub-gold: #D4AF37;
+  --color-tenderhub-gold-dark: #B8921F;
+  --color-tenderhub-gold-light: #F5C542;
+
+  --color-tenderhub-background: #F6F8FB;
+  --color-tenderhub-surface: #FFFFFF;
+
+  --color-tenderhub-success: #16A34A;
+  --color-tenderhub-warning: #F59E0B;
+  --color-tenderhub-danger: #DC2626;
+}
+
+
+/* ==========================================================
+   TENDERHUB DESIGN TOKENS
+========================================================== */
+
+:root {
+
+  /* --------------------------------------------------------
+     BRAND
+  -------------------------------------------------------- */
+
+  --navy: #071A33;
+  --navy-dark: #07132e;
+  --navy-light: #0D2545;
+
+  --gold: #D4AF37;
+  --gold-dark: #B8921F;
+  --gold-light: #F5C542;
+
+
+  /* --------------------------------------------------------
+     BACKGROUNDS
+  -------------------------------------------------------- */
+
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-muted: #f1f4f8;
+
+
+  /* --------------------------------------------------------
+     TEXT
+  -------------------------------------------------------- */
+
+  --text: #0d1b3d;
+  --text-light: #64748b;
+  --text-muted: #94a3b8;
+
+
+  /* --------------------------------------------------------
+     BORDERS
+  -------------------------------------------------------- */
+
+  --border: #e2e8f0;
+
+
+  /* --------------------------------------------------------
+     STATUS
+  -------------------------------------------------------- */
+
+  --success: #15803d;
+  --danger: #dc2626;
+  --warning: #b45309;
+
+
+  /* --------------------------------------------------------
+     SHADOWS
+  -------------------------------------------------------- */
+
+  --shadow-sm: 0 1px 3px rgba(13, 27, 61, 0.08);
+  --shadow-md: 0 6px 18px rgba(13, 27, 61, 0.10);
+  --shadow-lg: 0 15px 35px rgba(13, 27, 61, 0.14);
+
+
+  /* --------------------------------------------------------
+     RADIUS
+  -------------------------------------------------------- */
+
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+}
+
+
+/* ==========================================================
+   DARK MODE TOKENS
+========================================================== */
+
+.dark {
+
+  --background: #07132e;
+  --surface: #0d1b3d;
+  --surface-muted: #162b59;
+
+  --text: #f8fafc;
+  --text-light: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --border: #263b64;
+}
+
+
+/* ==========================================================
+   BASE / RESET
+========================================================== */
+
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+
+  body {
+    margin: 0;
+    padding: 0;
+
+    font-family:
+      "Poppins",
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      sans-serif;
+
+    background: var(--background);
+    color: var(--text);
+
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+
+  /*
+   * IMPORTANT:
+   *
+   * Do NOT use:
+   *
+   * a {
+   *   color: inherit;
+   * }
+   *
+   * globally.
+   *
+   * Tailwind classes such as text-white, text-blue-600,
+   * text-red-600, etc. should be allowed to determine
+   * the color of links.
+   */
+
+  a {
+    text-decoration: none;
+  }
+
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+
+  /*
+   * Do not globally assign a button color.
+   *
+   * This allows:
+   *
+   * text-white
+   * text-black
+   * text-gray-700
+   * text-tenderhub-navy
+   *
+   * and other Tailwind utilities to work normally.
+   */
+
+  button {
+    margin: 0;
+    cursor: pointer;
+  }
+
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+
+  /*
+   * Make SVG icons follow their surrounding text color.
+   *
+   * This is particularly useful with lucide-react.
+   */
+
+  button svg,
+  a svg {
+    color: currentColor;
+  }
+
+
+  input,
+  textarea,
+  select {
+    color: var(--text);
+  }
+
+
+  /*
+   * Remove default list spacing.
+   */
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+
+  /*
+   * Headings
+   */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+
+  p {
+    margin: 0;
+  }
+
+
+  /*
+   * Accessible keyboard focus.
+   */
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+}
+
+
+/* ==========================================================
+   TYPOGRAPHY
+========================================================== */
+
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+
+.section-subtitle {
+  max-width: 700px;
+  color: var(--text-light);
+  margin: 0 auto;
+}
+
+
+/* ==========================================================
+   LAYOUT
+========================================================== */
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+
+.section {
+  padding: 5rem 0;
+}
+
+
+/* ==========================================================
+   BUTTON SYSTEM
+========================================================== */
+
+/*
+ * Base button.
+ *
+ * IMPORTANT:
+ * The base .btn class intentionally does not use
+ * a global button selector.
+ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.85rem 1.5rem;
+
+  border-radius: var(--radius);
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+
+.btn:disabled {
+  opacity: 0.6;
+  transform: none;
+}
+
+
+/* ----------------------------------------------------------
+   PRIMARY NAVY
+---------------------------------------------------------- */
+
+.btn-primary {
+  background: var(--navy);
+  color: #ffffff;
+  border: 1px solid var(--navy);
+}
+
+
+.btn-primary:hover {
+  background: var(--navy-light);
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ----------------------------------------------------------
+   GOLD
+---------------------------------------------------------- */
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy);
+  border: 1px solid var(--gold);
+  font-weight: 700;
+}
+
+
+.btn-gold:hover {
+  background: var(--gold-dark);
+  color: #ffffff;
+  border-color: var(--gold-dark);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ----------------------------------------------------------
+   OUTLINE
+---------------------------------------------------------- */
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+}
+
+
+.btn-outline:hover {
+  background: var(--navy);
+  color: #ffffff;
+}
+
+
+/* ----------------------------------------------------------
+   WHITE
+---------------------------------------------------------- */
+
+.btn-white {
+  background: #ffffff;
+  color: var(--navy);
+  border: 1px solid #ffffff;
+}
+
+
+.btn-white:hover {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+}
+
+
+/* ==========================================================
+   CARDS
+========================================================== */
+
+.card {
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1.5rem;
+
+  border: 1px solid var(--border);
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+.card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: var(--shadow-lg);
+
+  border-color: rgba(212, 175, 55, 0.45);
+}
+
+
+/* ==========================================================
+   FORM ELEMENTS
+========================================================== */
+
+input,
+textarea,
+select {
+  width: 100%;
+
+  padding: 0.85rem 1rem;
+
+  border-radius: var(--radius);
+
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted);
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+
+  border-color: var(--gold);
+
+  box-shadow:
+    0 0 0 3px rgba(212, 175, 55, 0.18);
+}
+
+
+select {
+  cursor: pointer;
+}
+
+
+/* ==========================================================
+   NAVBAR
+========================================================== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid var(--border);
+}
+
+
+.navbar-container {
+  max-width: 1280px;
+
+  margin: auto;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0.9rem 1.5rem;
+}
+
+
+/* ----------------------------------------------------------
+   LOGO
+---------------------------------------------------------- */
+
+.logo {
+  color: var(--navy);
+
+  font-size: 1.5rem;
+
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+
+.logo span {
+  color: var(--gold);
+}
+
+
+/* ----------------------------------------------------------
+   NAVIGATION
+---------------------------------------------------------- */
+
+.nav-links {
+  display: flex;
+
+  align-items: center;
+
+  gap: 2rem;
+}
+
+
+.nav-links a {
+  position: relative;
+
+  color: var(--navy);
+
+  font-weight: 500;
+
+  transition: color 0.25s ease;
+}
+
+
+.nav-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  bottom: -8px;
+
+  width: 0;
+
+  height: 2px;
+
+  background: var(--gold);
+
+  transition: width 0.25s ease;
+}
+
+
+.nav-links a:hover {
+  color: var(--gold-dark);
+}
+
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+
+/* ==========================================================
+   HERO
+========================================================== */
+
+.hero {
+  position: relative;
+
+  min-height: 650px;
+
+  display: flex;
+
+  align-items: center;
+
+  overflow: hidden;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 19, 46, 0.96) 0%,
+      rgba(13, 27, 61, 0.88) 45%,
+      rgba(13, 27, 61, 0.45) 100%
+    ),
+    url("/hero-bg.jpg");
+
+  background-size: cover;
+
+  background-position: center;
+}
+
+
+.hero-content {
+  max-width: 760px;
+}
+
+
+.hero h1 {
+  color: #ffffff;
+
+  font-size: clamp(2.8rem, 5vw, 4.7rem);
+
+  line-height: 1.08;
+
+  margin-bottom: 1.5rem;
+
+  letter-spacing: -1px;
+}
+
+
+.hero h1 span {
+  color: var(--gold);
+}
+
+
+.hero p {
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 1.15rem;
+
+  max-width: 650px;
+
+  margin-bottom: 2rem;
+}
+
+
+.hero-buttons {
+  display: flex;
+
+  gap: 1rem;
+
+  flex-wrap: wrap;
+}
+
+
+/* ==========================================================
+   SEARCH BAR
+========================================================== */
+
+.search-wrapper {
+  margin-top: -60px;
+
+  position: relative;
+
+  z-index: 100;
+}
+
+
+.search-card {
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1.75rem;
+
+  box-shadow: var(--shadow-lg);
+
+  border: 1px solid var(--border);
+}
+
+
+.search-grid {
+  display: grid;
+
+  grid-template-columns: 2fr 1fr 1fr auto;
+
+  gap: 1rem;
+}
+
+
+.search-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  background: var(--navy);
+
+  color: #ffffff;
+
+  border: 1px solid var(--navy);
+
+  border-radius: var(--radius);
+
+  padding: 0.95rem 2rem;
+
+  font-weight: 600;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.search-button:hover {
+  background: var(--gold);
+
+  color: var(--navy);
+
+  border-color: var(--gold);
+
+  transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   CATEGORY CARDS
+========================================================== */
+
+.category-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 1.5rem;
+}
+
+
+.category-card {
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  padding: 2rem;
+
+  text-align: center;
+
+  transition: 0.3s;
+
+  border: 1px solid var(--border);
+
+  cursor: pointer;
+}
+
+
+.category-card:hover {
+  transform: translateY(-6px);
+
+  box-shadow: var(--shadow-lg);
+
+  border-color: var(--gold);
+}
+
+
+.category-icon {
+  width: 70px;
+
+  height: 70px;
+
+  border-radius: 50%;
+
+  margin: auto auto 1rem;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: rgba(212, 175, 55, 0.12);
+
+  color: var(--gold-dark);
+
+  font-size: 1.8rem;
+}
+
+
+/* ==========================================================
+   TENDER CARDS
+========================================================== */
+
+.tender-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(350px, 1fr));
+
+  gap: 2rem;
+}
+
+
+.tender-card {
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  padding: 1.75rem;
+
+  border: 1px solid var(--border);
+
+  transition: 0.3s;
+}
+
+
+.tender-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: var(--shadow-lg);
+
+  border-color: rgba(212, 175, 55, 0.6);
+}
+
+
+.tender-title {
+  font-size: 1.25rem;
+
+  font-weight: 700;
+
+  color: var(--navy);
+
+  margin-bottom: 0.8rem;
+}
+
+
+.tender-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 0.6rem;
+
+  margin: 1rem 0;
+}
+
+
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  background: rgba(212, 175, 55, 0.13);
+
+  color: var(--gold-dark);
+
+  padding: 0.4rem 0.8rem;
+
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+}
+
+
+.deadline {
+  color: var(--danger);
+
+  font-weight: 600;
+}
+
+
+.organization {
+  color: var(--navy-light);
+
+  font-weight: 600;
+}
+
+
+/* ==========================================================
+   STATS
+========================================================== */
+
+.stats {
+  background: var(--navy);
+
+  color: #ffffff;
+}
+
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(200px, 1fr));
+
+  gap: 2rem;
+}
+
+
+.stat-card {
+  text-align: center;
+}
+
+
+.stat-number {
+  font-size: 3rem;
+
+  font-weight: 800;
+
+  color: var(--gold);
+}
+
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* ==========================================================
+   NEWSLETTER
+========================================================== */
+
+.newsletter {
+  background:
+    linear-gradient(
+      135deg,
+      var(--navy),
+      var(--navy-light)
+    );
+
+  color: #ffffff;
+
+  border-radius: var(--radius-lg);
+
+  padding: 4rem 2rem;
+}
+
+
+.newsletter h2 {
+  color: #ffffff;
+}
+
+
+.newsletter p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+
+.newsletter-form {
+  margin-top: 2rem;
+
+  display: flex;
+
+  gap: 1rem;
+
+  flex-wrap: wrap;
+}
+
+
+.newsletter-form input {
+  flex: 1;
+}
+
+
+/* ==========================================================
+   NEWS SECTION
+========================================================== */
+
+.news-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+
+  gap: 2rem;
+}
+
+
+.news-card {
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow-sm);
+
+  transition: 0.3s;
+}
+
+
+.news-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow: var(--shadow-lg);
+}
+
+
+.news-card img {
+  width: 100%;
+
+  height: 220px;
+
+  object-fit: cover;
+}
+
+
+.news-content {
+  padding: 1.5rem;
+}
+
+
+/* ==========================================================
+   CTA
+========================================================== */
+
+.cta {
+  text-align: center;
+
+  padding: 5rem 2rem;
+
+  background: rgba(212, 175, 55, 0.08);
+
+  border: 1px solid rgba(212, 175, 55, 0.25);
+
+  border-radius: var(--radius-lg);
+}
+
+
+.cta h2 {
+  margin-bottom: 1rem;
+}
+
+
+.cta p {
+  max-width: 650px;
+
+  margin: auto auto 2rem;
+
+  color: var(--text-light);
+}
+
+
+/* ==========================================================
+   FOOTER
+========================================================== */
+
+.footer {
+  background: var(--navy-dark);
+
+  color: #ffffff;
+
+  margin-top: 5rem;
+}
+
+
+.footer-container {
+  max-width: 1280px;
+
+  margin: auto;
+
+  padding: 4rem 1.5rem;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 2rem;
+}
+
+
+.footer h3,
+.footer h4 {
+  color: #ffffff;
+}
+
+
+.footer a {
+  color: #cbd5e1;
+
+  transition: color 0.25s ease;
+}
+
+
+.footer a:hover {
+  color: var(--gold);
+}
+
+
+.footer-bottom {
+  border-top:
+    1px solid rgba(255, 255, 255, 0.1);
+
+  text-align: center;
+
+  padding: 1.5rem;
+
+  color: #94a3b8;
+}
+
+
+/* ==========================================================
+   SHADOW HELPERS
+========================================================== */
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+
+/* ==========================================================
+   UTILITY HELPERS
+========================================================== */
+
+.text-center {
+  text-align: center;
+}
+
+
+.rounded {
+  border-radius: var(--radius);
+}
+
+
+/* ==========================================================
+   PRICING SECTION
+========================================================== */
+
+.pricing-section {
+  position: relative;
+
+  padding: 7rem 0;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(212, 175, 55, 0.08),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #f8fafc 100%
+    );
+}
+
+
+/* ==========================================================
+   PRICING HEADER
+========================================================== */
+
+.pricing-header {
+  max-width: 720px;
+
+  margin: 0 auto 2.75rem;
+
+  text-align: center;
+}
+
+
+.pricing-eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.5rem;
+
+  margin-bottom: 1rem;
+
+  color: var(--gold-dark);
+
+  font-size: 0.72rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1.8px;
+}
+
+
+.pricing-eyebrow::before,
+.pricing-eyebrow::after {
+  content: "";
+
+  width: 22px;
+
+  height: 1px;
+
+  background: var(--gold);
+}
+
+
+.pricing-header h2 {
+  max-width: 650px;
+
+  margin: 0 auto 1rem;
+
+  color: var(--navy);
+
+  font-size: clamp(2rem, 4vw, 3.1rem);
+
+  line-height: 1.1;
+
+  letter-spacing: -1px;
+}
+
+
+.pricing-header h2 span {
+  color: var(--gold-dark);
+}
+
+
+.pricing-header p {
+  max-width: 580px;
+
+  margin: 0 auto;
+
+  color: var(--text-light);
+
+  font-size: 1rem;
+
+  line-height: 1.7;
+}
+
+
+/* ==========================================================
+   PRICING TOGGLE
+========================================================== */
+
+.pricing-toggle-wrapper {
+  display: flex;
+
+  justify-content: center;
+
+  margin-bottom: 3.5rem;
+}
+
+
+.pricing-toggle {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.25rem;
+
+  padding: 0.35rem;
+
+  background: #eef1f5;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 999px;
+
+  box-shadow:
+    inset 0 1px 2px rgba(13, 27, 61, 0.04);
+}
+
+
+.pricing-toggle-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  min-width: 150px;
+
+  padding: 0.75rem 1.25rem;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: var(--text-light);
+
+  font-size: 0.88rem;
+
+  font-weight: 600;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+.pricing-toggle-button:hover {
+  color: var(--navy);
+}
+
+
+.pricing-toggle-button.active {
+  background: var(--navy);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 4px 12px rgba(13, 27, 61, 0.18);
+}
+
+
+.pricing-toggle-button.active svg {
+  color: var(--gold);
+}
+
+
+/* ==========================================================
+   PRICING GRID
+========================================================== */
+
+.pricing-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1.5rem;
+
+  align-items: stretch;
+}
+
+
+/* ==========================================================
+   PRICING CARD
+========================================================== */
+
+.pricing-card {
+  position: relative;
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-width: 0;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 4px 15px rgba(13, 27, 61, 0.04);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+
+.pricing-card:hover {
+  transform: translateY(-5px);
+
+  border-color:
+    rgba(212, 175, 55, 0.5);
+
+  box-shadow:
+    0 18px 40px rgba(13, 27, 61, 0.1);
+}
+
+
+/* ==========================================================
+   POPULAR PLAN
+========================================================== */
+
+.pricing-card.popular {
+  border: 2px solid var(--gold);
+
+  box-shadow:
+    0 12px 35px rgba(212, 175, 55, 0.16);
+}
+
+
+.pricing-card.popular:hover {
+  box-shadow:
+    0 20px 45px rgba(212, 175, 55, 0.22);
+}
+
+
+/* ==========================================================
+   POPULAR BADGE
+========================================================== */
+
+.popular-badge {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 34px;
+
+  padding: 0.55rem 1rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold),
+      var(--gold-dark)
+    );
+
+  color: var(--navy);
+
+  font-size: 0.68rem;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+/* ==========================================================
+   PRICING CONTENT
+========================================================== */
+
+.pricing-card-content {
+  display: flex;
+
+  flex-direction: column;
+
+  height: 100%;
+
+  padding: 2.25rem 2rem;
+}
+
+
+.pricing-card h3 {
+  margin-bottom: 0.6rem;
+
+  color: var(--navy);
+
+  font-size: 1.35rem;
+
+  font-weight: 700;
+}
+
+
+.pricing-description {
+  min-height: 58px;
+
+  color: var(--text-light);
+
+  font-size: 0.86rem;
+
+  line-height: 1.6;
+}
+
+
+/* ==========================================================
+   PRICE
+========================================================== */
+
+.pricing-price {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 0.35rem;
+
+  margin-top: 1.5rem;
+}
+
+
+.currency {
+  color: var(--gold-dark);
+
+  font-size: 0.8rem;
+
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+
+.price {
+  color: var(--navy);
+
+  font-size: clamp(2.1rem, 3vw, 2.6rem);
+
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -1.5px;
+}
+
+
+.pricing-period {
+  min-height: 22px;
+
+  margin-top: 0.5rem;
+
+  color: var(--text-muted);
+
+  font-size: 0.76rem;
+}
+
+
+/* ==========================================================
+   PRICING BUTTON
+========================================================== */
+
+.pricing-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  width: 100%;
+
+  margin-top: 1.5rem;
+
+  padding: 0.85rem 1rem;
+
+  border-radius: 10px;
+
+  font-size: 0.88rem;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.pricing-button:hover {
+  transform: translateY(-2px);
+}
+
+
+.pricing-button:disabled {
+  opacity: 0.6;
+
+  transform: none;
+}
+
+
+/* ----------------------------------------------------------
+   PRIMARY PRICING BUTTON
+---------------------------------------------------------- */
+
+.pricing-button-primary {
+  background: var(--navy);
+
+  color: #ffffff;
+
+  border: 1px solid var(--navy);
+}
+
+
+.pricing-button-primary:hover {
+  background: var(--gold);
+
+  color: var(--navy);
+
+  border-color: var(--gold);
+
+  box-shadow:
+    0 8px 18px rgba(212, 175, 55, 0.2);
+}
+
+
+/* ----------------------------------------------------------
+   OUTLINE PRICING BUTTON
+---------------------------------------------------------- */
+
+.pricing-button-outline {
+  background: transparent;
+
+  color: var(--navy);
+
+  border: 1px solid #cbd5e1;
+}
+
+
+.pricing-button-outline:hover {
+  background: var(--navy);
+
+  color: #ffffff;
+
+  border-color: var(--navy);
+}
+
+
+/* ==========================================================
+   PRICING FEATURES
+========================================================== */
+
+.pricing-divider {
+  width: 100%;
+
+  height: 1px;
+
+  margin: 2rem 0 1.5rem;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--border),
+      transparent
+    );
+}
+
+
+.features-title {
+  margin-bottom: 1rem;
+
+  color: var(--navy);
+
+  font-size: 0.78rem;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.7px;
+}
+
+
+.pricing-features {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.75rem;
+}
+
+
+.pricing-features li {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 0.65rem;
+
+  color: var(--text-light);
+
+  font-size: 0.82rem;
+
+  line-height: 1.45;
+}
+
+
+.feature-check {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 19px;
+
+  height: 19px;
+
+  margin-top: 1px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(212, 175, 55, 0.14);
+
+  color: var(--gold-dark);
+}
+
+
+/* ==========================================================
+   DARK MODE
+========================================================== */
+
+.dark body {
+  background: var(--background);
+
+  color: var(--text);
+}
+
+
+/* ----------------------------------------------------------
+   NAVBAR
+---------------------------------------------------------- */
+
+.dark .navbar {
+  background: rgba(7, 19, 46, 0.96);
+
+  border-color: var(--border);
+}
+
+
+.dark .nav-links a,
+.dark .logo {
+  color: #ffffff;
+}
+
+
+/* ----------------------------------------------------------
+   CARDS
+---------------------------------------------------------- */
+
+.dark .card,
+.dark .category-card,
+.dark .tender-card,
+.dark .news-card,
+.dark .search-card {
+  background: var(--surface);
+
+  border-color: var(--border);
+}
+
+
+.dark .tender-title {
+  color: #ffffff;
+}
+
+
+/* ----------------------------------------------------------
+   FORMS
+---------------------------------------------------------- */
+
+.dark input,
+.dark textarea,
+.dark select {
+  background: var(--surface-muted);
+
+  border-color: var(--border);
+
+  color: #ffffff;
+}
+
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8;
+}
+
+
+/* ----------------------------------------------------------
+   PRICING
+---------------------------------------------------------- */
+
+.dark .pricing-section {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(212, 175, 55, 0.08),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #07132e 0%,
+      #0d1b3d 100%
+    );
+}
+
+
+.dark .pricing-header h2 {
+  color: #ffffff;
+}
+
+
+.dark .pricing-toggle {
+  background: #162b59;
+
+  border-color: #263b64;
+}
+
+
+.dark .pricing-toggle-button {
+  color: #cbd5e1;
+}
+
+
+.dark .pricing-toggle-button:hover {
+  color: #ffffff;
+}
+
+
+.dark .pricing-card {
+  background: #0d1b3d;
+
+  border-color: #263b64;
+}
+
+
+.dark .pricing-card h3,
+.dark .price,
+.dark .features-title {
+  color: #ffffff;
+}
+
+
+.dark .pricing-description,
+.dark .pricing-features li {
+  color: #cbd5e1;
+}
+
+
+.dark .pricing-button-outline {
+  background: transparent;
+
+  color: #ffffff;
+
+  border-color: #475569;
+}
+
+
+.dark .pricing-button-outline:hover {
+  background: #ffffff;
+
+  color: var(--navy);
+
+  border-color: #ffffff;
+}
+
+
+/* ==========================================================
+   RESPONSIVE — GENERAL
+========================================================== */
+
+@media (max-width: 992px) {
+
+  .search-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .hero {
+    text-align: center;
+
+    min-height: 550px;
+  }
+
+
+  .hero-content {
+    margin: auto;
+  }
+
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+
+  .nav-links {
+    gap: 1rem;
+  }
+}
+
+
+/* ==========================================================
+   RESPONSIVE — TABLET
+========================================================== */
+
+@media (max-width: 768px) {
+
+  .section {
+    padding: 4rem 0;
+  }
+
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+
+  .navbar-container {
+    flex-direction: column;
+
+    gap: 1rem;
+  }
+
+
+  .nav-links {
+    flex-wrap: wrap;
+
+    justify-content: center;
+  }
+
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+}
+
+
+/* ==========================================================
+   RESPONSIVE — MOBILE
+========================================================== */
+
+@media (max-width: 576px) {
+
+  .container {
+    padding-inline: 1rem;
+  }
+
+
+  .hero {
+    padding: 3rem 0;
+  }
+
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+
+  .tender-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================
+   RESPONSIVE — PRICING
+========================================================== */
+
+@media (max-width: 1050px) {
+
+  .pricing-grid {
+    gap: 1rem;
+  }
+
+
+  .pricing-card-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .pricing-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .pricing-card:last-child {
+    grid-column: span 2;
+
+    max-width: 460px;
+
+    width: 100%;
+
+    margin: 0 auto;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .pricing-section {
+    padding: 5rem 0;
+  }
+
+
+  .pricing-header {
+    margin-bottom: 2rem;
+  }
+
+
+  .pricing-header h2 {
+    font-size: 2rem;
+  }
+
+
+  .pricing-header p {
+    font-size: 0.92rem;
+  }
+
+
+  .pricing-toggle-wrapper {
+    margin-bottom: 2.5rem;
+  }
+
+
+  .pricing-toggle {
+    width: 100%;
+
+    max-width: 360px;
+  }
+
+
+  .pricing-toggle-button {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 0.7rem 0.6rem;
+
+    font-size: 0.8rem;
+  }
+
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+
+    gap: 1.25rem;
+  }
+
+
+  .pricing-card:last-child {
+    grid-column: auto;
+
+    max-width: none;
+  }
+
+
+  .pricing-card-content {
+    padding: 1.75rem 1.5rem;
+  }
+
+
+  .pricing-description {
+    min-height: auto;
+  }
+}

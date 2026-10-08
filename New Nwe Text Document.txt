@@ -1,0 +1,754 @@
+i want to change my folder structre to this tenderhub/
+│
+├── app/
+│   │
+│   ├── (public)/
+│   │   ├── layout.tsx                              🟡 MODIFY
+│   │   ├── page.tsx                                🟡 MODIFY
+│   │   ├── loading.tsx                             🟢 KEEP
+│   │   ├── not-found.tsx                           🟢 KEEP
+│   │   │
+│   │   ├── about/
+│   │   │   └── page.tsx                            🟡 MODIFY
+│   │   │
+│   │   ├── contact/
+│   │   │   └── page.tsx                            🟡 MODIFY
+│   │   │
+│   │   ├── pricing/
+│   │   │   └── page.tsx                            🟡 MODIFY
+│   │   │
+│   │   ├── news/
+│   │   │   ├── page.tsx                            🟢 KEEP
+│   │   │   └── [slug]/
+│   │   │       └── page.tsx                        🟢 KEEP
+│   │   │
+│   │   ├── solicitations/                          🆕 ADD
+│   │   │   ├── page.tsx
+│   │   │   └── [id]/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── bids/                                   🆕 ADD
+│   │   │   └── page.tsx
+│   │   │
+│   │   └── vendors/                                🆕 ADD
+│   │       ├── page.tsx
+│   │       └── [id]/
+│   │           └── page.tsx
+│   │
+│   ├── auth/
+│   │   ├── login/
+│   │   │   └── page.tsx                            🟡 MODIFY
+│   │   ├── register/
+│   │   │   └── page.tsx                            🟡 MODIFY
+│   │   ├── forgot-password/
+│   │   │   └── page.tsx                            🟢 KEEP
+│   │   ├── reset-password/
+│   │   │   └── page.tsx                            🟢 KEEP
+│   │   └── verify-email/
+│   │       └── page.tsx                            🟢 KEEP
+│   │
+│   ├── dashboard/
+│   │   ├── layout.tsx                              🟡 MODIFY
+│   │   ├── page.tsx                                🟡 MODIFY
+│   │   │
+│   │   ├── admin/
+│   │   │   ├── page.tsx                            🟡 MODIFY
+│   │   │   │
+│   │   │   ├── users/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── organizations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── vendors/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── solicitations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── contracts/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── compliance/
+│   │   │   │   └── page.tsx
+│   │   │   │
+│   │   │   ├── classifications/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── naics/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── psc/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── integrations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       └── page.tsx
+│   │   │   │
+│   │   │   ├── payments/
+│   │   │   │   └── page.tsx
+│   │   │   │
+│   │   │   ├── subscriptions/
+│   │   │   │   └── page.tsx
+│   │   │   │
+│   │   │   ├── audit-logs/
+│   │   │   │   └── page.tsx
+│   │   │   │
+│   │   │   └── settings/
+│   │   │       └── page.tsx
+│   │   │
+│   │   ├── organization/
+│   │   │   ├── page.tsx                            🆕/🔄
+│   │   │   │
+│   │   │   ├── settings/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── general/page.tsx
+│   │   │   │   ├── billing/page.tsx
+│   │   │   │   └── security/page.tsx
+│   │   │   │
+│   │   │   ├── members/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── departments/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── procurements/
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── new/
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── [id]/
+│   │   │   │       ├── page.tsx
+│   │   │   │       ├── edit/page.tsx
+│   │   │   │       ├── lots/page.tsx
+│   │   │   │       ├── requirements/page.tsx
+│   │   │   │       ├── documents/page.tsx
+│   │   │   │       ├── vendors/page.tsx
+│   │   │   │       ├── evaluations/page.tsx
+│   │   │   │       ├── awards/page.tsx
+│   │   │   │       └── contracts/page.tsx
+│   │   │   │
+│   │   │   ├── solicitations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── evaluations/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── awards/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── contracts/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   ├── notices/
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/page.tsx
+│   │   │   │
+│   │   │   └── reports/
+│   │   │       ├── page.tsx
+│   │   │       ├── procurement/page.tsx
+│   │   │       ├── bids/page.tsx
+│   │   │       ├── evaluations/page.tsx
+│   │   │       └── contracts/page.tsx
+│   │   │
+│   │   └── vendor/                                🔵 RENAME supplier → vendor
+│   │       ├── page.tsx
+│   │       ├── profile/
+│   │       │   └── page.tsx
+│   │       ├── settings/
+│   │       │   ├── page.tsx
+│   │       │   └── notifications/page.tsx
+│   │       ├── team/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── opportunities/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── solicitations/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── bids/
+│   │       │   ├── page.tsx
+│   │       │   ├── new/page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── documents/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── compliance/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── contracts/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── awards/
+│   │       │   ├── page.tsx
+│   │       │   └── [id]/page.tsx
+│   │       ├── saved/
+│   │       │   └── page.tsx
+│   │       ├── notifications/
+│   │       │   └── page.tsx
+│   │       └── billing/
+│   │           └── page.tsx
+│   │
+│   ├── api/
+│   │   ├── auth/                                  🟢 KEEP
+│   │   │   └── [...nextauth]/
+│   │   │       └── route.ts
+│   │   │
+│   │   ├── procurements/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── solicitations/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── lots/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── requirements/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── bids/
+│   │   │   ├── route.ts
+│   │   │   ├── [id]/route.ts
+│   │   │   └── [id]/submit/route.ts
+│   │   ├── evaluations/
+│   │   │   ├── route.ts
+│   │   │   ├── [id]/route.ts
+│   │   │   └── [id]/score/route.ts
+│   │   ├── awards/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── contracts/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── compliance/
+│   │   │   ├── route.ts
+│   │   │   ├── [id]/route.ts
+│   │   │   └── check/route.ts
+│   │   ├── vendors/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── organizations/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── classifications/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── notices/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── notifications/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── reports/
+│   │   │   ├── procurement/route.ts
+│   │   │   ├── bids/route.ts
+│   │   │   ├── evaluations/route.ts
+│   │   │   └── contracts/route.ts
+│   │   ├── integrations/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/route.ts
+│   │   ├── uploads/
+│   │   │   └── route.ts
+│   │   └── payments/
+│   │       ├── checkout/
+│   │       │   └── route.ts
+│   │       ├── webhook/
+│   │       │   └── route.ts
+│   │       └── refund/
+│   │           └── route.ts
+│   │
+│   └── checkout/
+│       └── page.tsx                               🟡 MODIFY
+│
+│
+├── components/
+│   │
+│   ├── ui/
+│   │   ├── Button.tsx                             🟢 KEEP
+│   │   ├── Card.tsx                               🟢 KEEP
+│   │   ├── Badge.tsx                              🟢 KEEP
+│   │   ├── Input.tsx                              🟢 KEEP
+│   │   ├── Modal.tsx                              🆕 ADD
+│   │   ├── Select.tsx                             🆕 ADD
+│   │   ├── DatePicker.tsx                         🆕 ADD
+│   │   ├── DataTable.tsx                          🆕 ADD
+│   │   ├── Pagination.tsx                         🆕 ADD
+│   │   ├── Tabs.tsx                               🆕 ADD
+│   │   ├── Dropdown.tsx                           🆕 ADD
+│   │   ├── FileUpload.tsx                         🆕 ADD
+│   │   ├── EmptyState.tsx                         🆕 ADD
+│   │   ├── LoadingSpinner.tsx                     🆕 ADD
+│   │   ├── ConfirmDialog.tsx                      🆕 ADD
+│   │   └── Toast.tsx                              🆕 ADD
+│   │
+│   ├── layout/
+│   │   ├── Navbar.tsx                             🟡 MODIFY
+│   │   ├── Footer.tsx                             🟡 MODIFY
+│   │   ├── DashboardSidebar.tsx                   🆕 ADD
+│   │   ├── OrganizationSwitcher.tsx               🆕 ADD
+│   │   ├── UserMenu.tsx                           🆕 ADD
+│   │   └── MobileSidebar.tsx                      🆕 ADD
+│   │
+│   ├── auth/
+│   │   ├── LoginForm.tsx                          🟡 MODIFY
+│   │   ├── RegisterForm.tsx                       🟡 MODIFY
+│   │   ├── ForgotPasswordForm.tsx                 🟢 KEEP
+│   │   ├── ResetPasswordForm.tsx                  🟢 KEEP
+│   │   └── VerifyEmail.tsx                        🟢 KEEP
+│   │
+│   ├── home/
+│   │   ├── HeroSection.tsx                        🟡 MODIFY
+│   │   ├── SearchBar.tsx                          🟡 MODIFY
+│   │   ├── Categories.tsx                         🔵 REPLACE
+│   │   ├── Features.tsx                           🟡 MODIFY
+│   │   ├── SolicitationSection.tsx                🆕 ADD
+│   │   ├── VendorCTA.tsx                          🆕 ADD
+│   │   └── ProcurementNews.tsx                    🆕 ADD
+│   │
+│   ├── procurement/
+│   │   ├── ProcurementCard.tsx                    🆕 ADD
+│   │   ├── ProcurementForm.tsx                    🆕 ADD
+│   │   ├── ProcurementStatus.tsx                  🆕 ADD
+│   │   ├── ProcurementTimeline.tsx                🆕 ADD
+│   │   └── ProcurementFilters.tsx                 🆕 ADD
+│   │
+│   ├── solicitations/
+│   │   ├── SolicitationCard.tsx                   🆕 ADD
+│   │   ├── SolicitationForm.tsx                   🆕 ADD
+│   │   ├── SolicitationDetails.tsx                🆕 ADD
+│   │   ├── SolicitationStatus.tsx                 🆕 ADD
+│   │   ├── SolicitationFilters.tsx                🆕 ADD
+│   │   ├── SolicitationDocuments.tsx              🆕 ADD
+│   │   └── SolicitationTimeline.tsx               🆕 ADD
+│   │
+│   ├── lots/
+│   │   ├── LotCard.tsx                             🆕 ADD
+│   │   ├── LotForm.tsx                             🆕 ADD
+│   │   ├── LotList.tsx                             🆕 ADD
+│   │   └── LotDetails.tsx                          🆕 ADD
+│   │
+│   ├── bids/
+│   │   ├── BidForm.tsx                             🆕 ADD
+│   │   ├── BidCard.tsx                             🆕 ADD
+│   │   ├── BidDetails.tsx                          🆕 ADD
+│   │   ├── BidSubmission.tsx                       🆕 ADD
+│   │   ├── BidStatus.tsx                           🆕 ADD
+│   │   └── BidDocuments.tsx                        🆕 ADD
+│   │
+│   ├── evaluations/
+│   │   ├── EvaluationForm.tsx                      🆕 ADD
+│   │   ├── EvaluationCriteria.tsx                 🆕 ADD
+│   │   ├── EvaluationScorecard.tsx                🆕 ADD
+│   │   ├── EvaluationMatrix.tsx                   🆕 ADD
+│   │   ├── EvaluatorPanel.tsx                     🆕 ADD
+│   │   └── BidComparison.tsx                      🆕 ADD
+│   │
+│   ├── awards/
+│   │   ├── AwardForm.tsx                           🆕 ADD
+│   │   ├── AwardDetails.tsx                        🆕 ADD
+│   │   ├── AwardNotice.tsx                         🆕 ADD
+│   │   └── AwardSummary.tsx                        🆕 ADD
+│   │
+│   ├── contracts/
+│   │   ├── ContractForm.tsx                        🆕 ADD
+│   │   ├── ContractDetails.tsx                     🆕 ADD
+│   │   ├── ContractStatus.tsx                      🆕 ADD
+│   │   ├── ContractMilestones.tsx                  🆕 ADD
+│   │   ├── ContractPayments.tsx                    🆕 ADD
+│   │   └── ContractDocuments.tsx                   🆕 ADD
+│   │
+│   ├── compliance/
+│   │   ├── ComplianceDashboard.tsx                🆕 ADD
+│   │   ├── ComplianceCheck.tsx                    🆕 ADD
+│   │   ├── ComplianceStatus.tsx                   🆕 ADD
+│   │   ├── ComplianceRequirements.tsx             🆕 ADD
+│   │   └── ExpirationAlerts.tsx                   🆕 ADD
+│   │
+│   ├── vendors/
+│   │   ├── VendorProfile.tsx                      🆕 ADD
+│   │   ├── VendorCard.tsx                         🆕 ADD
+│   │   ├── VendorSearch.tsx                       🆕 ADD
+│   │   ├── VendorRegistration.tsx                🆕 ADD
+│   │   ├── VendorDocuments.tsx                   🆕 ADD
+│   │   ├── VendorCertifications.tsx              🆕 ADD
+│   │   └── VendorCompliance.tsx                  🆕 ADD
+│   │
+│   ├── organization/
+│   │   ├── OrganizationProfile.tsx                🆕 ADD
+│   │   ├── OrganizationMembers.tsx               🆕 ADD
+│   │   ├── OrganizationSettings.tsx              🆕 ADD
+│   │   └── DepartmentManager.tsx                 🆕 ADD
+│   │
+│   ├── classifications/
+│   │   ├── NaicsSelector.tsx                      🆕 ADD
+│   │   ├── PscSelector.tsx                        🆕 ADD
+│   │   └── ClassificationSearch.tsx              🆕 ADD
+│   │
+│   ├── notices/
+│   │   ├── NoticeForm.tsx                         🆕 ADD
+│   │   ├── NoticeList.tsx                         🆕 ADD
+│   │   └── NoticeDetails.tsx                      🆕 ADD
+│   │
+│   ├── payments/
+│   │   ├── CheckoutForm.tsx                       🟡 MODIFY
+│   │   ├── PaymentStatus.tsx                      🟡 MODIFY
+│   │   ├── SubscriptionPlans.tsx                  🟡 MODIFY
+│   │   └── BillingHistory.tsx                    🟡 MODIFY
+│   │
+│   ├── admin/
+│   │   ├── AdminDashboard.tsx                     🟡 MODIFY
+│   │   ├── UserManagement.tsx                    🟡 MODIFY
+│   │   ├── OrganizationManagement.tsx            🆕 ADD
+│   │   ├── VendorManagement.tsx                  🆕 ADD
+│   │   ├── SolicitationManagement.tsx            🆕 ADD
+│   │   ├── ContractManagement.tsx                🆕 ADD
+│   │   ├── ComplianceManagement.tsx              🆕 ADD
+│   │   ├── IntegrationManagement.tsx             🆕 ADD
+│   │   └── AuditLogViewer.tsx                    🆕 ADD
+│   │
+│   ├── notifications/
+│   │   ├── NotificationBell.tsx                  🆕 ADD
+│   │   ├── NotificationList.tsx                  🆕 ADD
+│   │   └── NotificationItem.tsx                  🆕 ADD
+│   │
+│   └── news/
+│       ├── NewsCard.tsx                           🟢 KEEP
+│       ├── NewsList.tsx                           🟢 KEEP
+│       └── NewsArticle.tsx                        🟢 KEEP
+│
+│
+├── lib/
+│   │
+│   ├── db/
+│   │   ├── prisma.ts                              🆕 ADD
+│   │   └── repositories/
+│   │       ├── user.repository.ts
+│   │       ├── organization.repository.ts
+│   │       ├── vendor.repository.ts
+│   │       ├── procurement.repository.ts
+│   │       ├── solicitation.repository.ts
+│   │       ├── lot.repository.ts
+│   │       ├── bid.repository.ts
+│   │       ├── evaluation.repository.ts
+│   │       ├── award.repository.ts
+│   │       ├── contract.repository.ts
+│   │       ├── compliance.repository.ts
+│   │       └── notification.repository.ts
+│   │
+│   ├── auth/
+│   │   ├── auth.ts                                🟡 MODIFY
+│   │   ├── permissions.ts                         🆕 ADD
+│   │   ├── roles.ts                               🆕 ADD
+│   │   ├── organization-access.ts                🆕 ADD
+│   │   └── session.ts                             🆕 ADD
+│   │
+│   ├── procurement/
+│   │   ├── procurement-service.ts                🆕 ADD
+│   │   ├── procurement-validation.ts             🆕 ADD
+│   │   ├── procurement-status.ts                 🆕 ADD
+│   │   └── procurement-permissions.ts            🆕 ADD
+│   │
+│   ├── solicitations/
+│   │   ├── solicitation-service.ts               🆕 ADD
+│   │   ├── solicitation-validation.ts            🆕 ADD
+│   │   ├── solicitation-status.ts                🆕 ADD
+│   │   └── solicitation-number.ts                🆕 ADD
+│   │
+│   ├── lots/
+│   │   ├── lot-service.ts                         🆕 ADD
+│   │   └── lot-validation.ts                     🆕 ADD
+│   │
+│   ├── bids/
+│   │   ├── bid-service.ts                         🆕 ADD
+│   │   ├── bid-validation.ts                     🆕 ADD
+│   │   ├── bid-submission.ts                     🆕 ADD
+│   │   └── bid-locking.ts                        🆕 ADD
+│   │
+│   ├── evaluations/
+│   │   ├── evaluation-service.ts                 🆕 ADD
+│   │   ├── scoring-service.ts                    🆕 ADD
+│   │   ├── ranking-service.ts                    🆕 ADD
+│   │   └── evaluation-validation.ts              🆕 ADD
+│   │
+│   ├── awards/
+│   │   ├── award-service.ts                       🆕 ADD
+│   │   └── award-validation.ts                   🆕 ADD
+│   │
+│   ├── contracts/
+│   │   ├── contract-service.ts                   🆕 ADD
+│   │   ├── milestone-service.ts                  🆕 ADD
+│   │   └── contract-payment-service.ts           🆕 ADD
+│   │
+│   ├── compliance/
+│   │   ├── compliance-engine.ts                  🆕 ADD
+│   │   ├── compliance-service.ts                 🆕 ADD
+│   │   ├── compliance-rules.ts                   🆕 ADD
+│   │   └── vendor-compliance.ts                  🆕 ADD
+│   │
+│   ├── classifications/
+│   │   ├── classification-service.ts             🆕 ADD
+│   │   ├── classification-search.ts              🆕 ADD
+│   │   ├── naics.ts                              🆕 ADD
+│   │   └── psc.ts                                🆕 ADD
+│   │
+│   ├── countries/
+│   │   ├── country-config.ts                     🆕 ADD
+│   │   ├── united-states.ts                      🆕 ADD
+│   │   └── index.ts                              🆕 ADD
+│   │
+│   ├── localization/
+│   │   ├── currency.ts                            🆕 ADD
+│   │   ├── date-format.ts                         🆕 ADD
+│   │   ├── number-format.ts                      🆕 ADD
+│   │   └── terminology.ts                        🆕 ADD
+│   │
+│   ├── integrations/
+│   │   ├── integration-service.ts                🆕 ADD
+│   │   ├── integration-registry.ts               🆕 ADD
+│   │   └── sam-gov/
+│   │       ├── client.ts
+│   │       ├── mapper.ts
+│   │       ├── sync.ts
+│   │       └── types.ts
+│   │
+│   ├── payments/
+│   │   ├── payment-service.ts                    🟡 MODIFY
+│   │   ├── payment-provider.ts                   🆕 ADD
+│   │   ├── payment-types.ts                      🆕 ADD
+│   │   └── stripe/
+│   │       ├── client.ts
+│   │       ├── checkout.ts
+│   │       └── webhook.ts
+│   │
+│   ├── subscriptions/
+│   │   ├── subscription-service.ts               🟡 MODIFY
+│   │   ├── plans.ts                              🆕 ADD
+│   │   ├── limits.ts                             🆕 ADD
+│   │   └── entitlements.ts                       🆕 ADD
+│   │
+│   ├── notifications/
+│   │   ├── notification-service.ts               🟡 MODIFY
+│   │   ├── notification-types.ts                 🆕 ADD
+│   │   └── notification-preferences.ts           🆕 ADD
+│   │
+│   ├── storage/
+│   │   ├── storage-service.ts                    🟡 MODIFY
+│   │   ├── storage-provider.ts                   🆕 ADD
+│   │   └── file-validation.ts                    🆕 ADD
+│   │
+│   ├── email/
+│   │   ├── email-service.ts                      🆕 ADD
+│   │   ├── email-types.ts                        🆕 ADD
+│   │   ├── templates/
+│   │   │   ├── verification-email.tsx
+│   │   │   ├── password-reset.tsx
+│   │   │   ├── bid-submitted.tsx
+│   │   │   ├── solicitation-closing.tsx
+│   │   │   ├── award-notification.tsx
+│   │   │   └── contract-notification.tsx
+│   │   └── providers/
+│   │       └── resend.ts
+│   │
+│   ├── reports/
+│   │   ├── procurement-report.ts                 🆕 ADD
+│   │   ├── bid-report.ts                         🆕 ADD
+│   │   ├── evaluation-report.ts                 🆕 ADD
+│   │   └── contract-report.ts                   🆕 ADD
+│   │
+│   ├── validation/
+│   │   ├── organization.ts                       🆕 ADD
+│   │   ├── vendor.ts                             🆕 ADD
+│   │   ├── procurement.ts                        🆕 ADD
+│   │   ├── solicitation.ts                       🆕 ADD
+│   │   ├── bid.ts                                🆕 ADD
+│   │   └── contract.ts                           🆕 ADD
+│   │
+│   ├── config/
+│   │   ├── app.ts                                🆕 ADD
+│   │   ├── country.ts                            🆕 ADD
+│   │   ├── currency.ts                           🆕 ADD
+│   │   ├── procurement.ts                        🆕 ADD
+│   │   └── environment.ts                        🆕 ADD
+│   │
+│   ├── constants/
+│   │   ├── roles.ts                              🟡 MODIFY
+│   │   ├── statuses.ts                           🟡 MODIFY
+│   │   ├── classifications.ts                   🆕 ADD
+│   │   └── plans.ts                              🆕 ADD
+│   │
+│   └── utils/
+│       ├── cn.ts                                 🟢 KEEP
+│       ├── format-currency.ts                   🟢 KEEP/MODIFY
+│       ├── format-date.ts                       🟢 KEEP/MODIFY
+│       ├── generate-id.ts                        🆕 ADD
+│       ├── slugify.ts                            🟢 KEEP
+│       └── pagination.ts                         🆕 ADD
+│
+│
+├── hooks/
+│   ├── useOrganization.ts                         🆕 ADD
+│   ├── usePermissions.ts                          🆕 ADD
+│   ├── useProcurement.ts                          🆕 ADD
+│   ├── useSolicitation.ts                         🆕 ADD
+│   ├── useBid.ts                                  🆕 ADD
+│   ├── useEvaluation.ts                           🆕 ADD
+│   ├── useNotifications.ts                        🆕 ADD
+│   └── useDebounce.ts                             🆕 ADD
+│
+│
+├── context/
+│   ├── OrganizationContext.tsx                    🆕 ADD
+│   └── CountryContext.tsx                         🆕 ADD
+│
+│
+├── types/
+│   ├── auth.ts                                    🆕 ADD
+│   ├── organization.ts                            🆕 ADD
+│   ├── vendor.ts                                  🆕 ADD
+│   ├── procurement.ts                             🆕 ADD
+│   ├── solicitation.ts                            🆕 ADD
+│   ├── lot.ts                                     🆕 ADD
+│   ├── bid.ts                                     🆕 ADD
+│   ├── evaluation.ts                              🆕 ADD
+│   ├── award.ts                                   🆕 ADD
+│   ├── contract.ts                                🆕 ADD
+│   ├── compliance.ts                              🆕 ADD
+│   ├── classification.ts                          🆕 ADD
+│   ├── payment.ts                                 🆕 ADD
+│   ├── notification.ts                            🆕 ADD
+│   └── country.ts                                 🆕 ADD
+│
+│
+├── prisma/
+│   ├── schema.prisma                              🔄 MAJOR REWRITE
+│   ├── seed.ts                                    🔄 REWRITE
+│   │
+│   └── migrations/
+│       ├── 20260713165549_init/                   🟢 KEEP
+│       ├── 20260714212102/                       🟢 KEEP
+│       ├── 2026_organization_members/            🆕 ADD
+│       ├── 2026_countries_currencies/            🆕 ADD
+│       ├── 2026_procurement_engine/              🆕 ADD
+│       ├── 2026_solicitations/                   🆕 ADD
+│       ├── 2026_lots/                            🆕 ADD
+│       ├── 2026_bids/                            🆕 ADD
+│       ├── 2026_evaluations/                    🆕 ADD
+│       ├── 2026_awards/                         🆕 ADD
+│       ├── 2026_contracts/                      🆕 ADD
+│       ├── 2026_compliance/                    🆕 ADD
+│       ├── 2026_classifications/               🆕 ADD
+│       ├── 2026_integrations/                  🆕 ADD
+│       ├── 2026_payment_upgrade/               🆕 ADD
+│       └── 2026_audit_security/               🆕 ADD
+│
+│
+├── public/
+│   ├── images/                                    🟢 KEEP
+│   ├── news/                                      🟢 KEEP
+│   │   ├── news-1.jpg
+│   │   ├── news-2.jpg
+│   │   └── news-3.jpg
+│   ├── logos/                                     🆕 ADD
+│   └── demo/                                      🆕 ADD
+│
+│
+├── tests/
+│   ├── unit/
+│   │   ├── procurement/
+│   │   │   ├── procurement-service.test.ts
+│   │   │   └── procurement-validation.test.ts
+│   │   ├── solicitations/
+│   │   │   └── solicitation-service.test.ts
+│   │   ├── bids/
+│   │   │   ├── bid-service.test.ts
+│   │   │   ├── bid-validation.test.ts
+│   │   │   └── bid-locking.test.ts
+│   │   ├── evaluations/
+│   │   │   ├── scoring.test.ts
+│   │   │   └── ranking.test.ts
+│   │   ├── compliance/
+│   │   │   └── compliance-engine.test.ts
+│   │   └── payments/
+│   │       └── payment-service.test.ts
+│   │
+│   ├── integration/
+│   │   ├── auth/
+│   │   │   └── auth.test.ts
+│   │   ├── procurement/
+│   │   │   └── procurement.test.ts
+│   │   ├── bids/
+│   │   │   └── bids.test.ts
+│   │   └── contracts/
+│   │       └── contracts.test.ts
+│   │
+│   └── e2e/
+│       ├── organization/
+│       │   ├── organization.spec.ts
+│       │   └── procurement.spec.ts
+│       ├── vendor/
+│       │   ├── registration.spec.ts
+│       │   └── bidding.spec.ts
+│       ├── procurement/
+│       │   ├── solicitation.spec.ts
+│       │   ├── evaluation.spec.ts
+│       │   └── award.spec.ts
+│       └── payments/
+│           └── checkout.spec.ts
+│
+│
+├── docs/
+│   ├── README.md                                  🆕 ADD
+│   ├── architecture.md                            🆕 ADD
+│   ├── installation.md                            🆕 ADD
+│   ├── deployment.md                              🆕 ADD
+│   ├── database.md                                🆕 ADD
+│   ├── procurement-workflow.md                    🆕 ADD
+│   ├── vendor-workflow.md                         🆕 ADD
+│   ├── evaluation-workflow.md                     🆕 ADD
+│   ├── contract-workflow.md                       🆕 ADD
+│   ├── compliance.md                              🆕 ADD
+│   ├── integrations.md                            🆕 ADD
+│   ├── payments.md                                🆕 ADD
+│   ├── configuration.md                           🆕 ADD
+│   └── us-market.md                               🆕 ADD
+│
+│
+├── scripts/
+│   ├── seed-demo.ts                               🆕 ADD
+│   ├── import-naics.ts                            🆕 ADD
+│   ├── import-psc.ts                              🆕 ADD
+│   ├── verify-environment.ts                      🆕 ADD
+│   ├── health-check.ts                            🆕 ADD
+│   └── migrate-data.ts                            🆕 ADD
+│
+│
+├── .env.example                                   🆕 ADD
+├── .env.local                                     🔴 DO NOT COMMIT
+├── .gitignore                                     🟡 MODIFY
+├── README.md                                      🔄 REWRITE
+├── package.json                                   🟡 MODIFY
+├── package-lock.json                              🟢 KEEP / REGENERATE
+├── next.config.ts                                 🟡 MODIFY
+├── tsconfig.json                                  🟢 KEEP / MODIFY
+├── middleware.ts                                  🟡 MODIFY
+├── auth.ts                                        🟡 MODIFY
+├── eslint.config.mjs                              🟢 KEEP / MODIFY
+├── postcss.config.mjs                             🟢 KEEP
+├── tailwind.config.ts                             🟢 KEEP/MODIFY IF PRESENT
+├── components.json                                🟢 KEEP IF USING shadcn
+└── next-env.d.ts                                  🟢 KEEPgive me pictures of the general public dashboard,then vender  organisation or supplier dashbards and i c how they will liiklike

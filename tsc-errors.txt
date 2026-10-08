@@ -1,0 +1,61 @@
+﻿lib/application/evaluation.ts(74,9): error TS2353: Object literal may only specify known properties, and 'userId' does not exist in type 'OrganizationWhereUniqueInput'.
+lib/application/evaluation.ts(90,7): error TS2322: Type '{ userId: string; }' is not assignable to type 'SubscriptionWhereUniqueInput'.
+  Type '{ userId: string; }' is not assignable to type '{ id: string; } & { id?: string | undefined; AND?: SubscriptionWhereInput | SubscriptionWhereInput[] | undefined; OR?: SubscriptionWhereInput[] | undefined; ... 12 more ...; organization?: (Without<...> & OrganizationWhereInput) | ... 2 more ... | undefined; }'.
+    Property 'id' is missing in type '{ userId: string; }' but required in type '{ id: string; }'.
+lib/application/evaluation.ts(128,18): error TS2339: Property 'tenderApplication' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/evaluation.ts(235,16): error TS2339: Property 'tenderApplication' does not exist on type 'Omit<PrismaClient<PrismaClientOptions, never, DefaultArgs>, "$extends" | "$transaction" | "$disconnect" | "$connect" | "$on">'.
+lib/application/evaluation.ts(259,11): error TS2559: Type 'string' has no properties in common with type 'UserCreateNestedOneWithoutApplicationActivitiesInput'.
+lib/application/updateApplication.ts(63,7): error TS2367: This comparison appears to be unintentional because the types 'UserRole' and '"SUPPLIER"' have no overlap.
+lib/application/updateApplication.ts(70,18): error TS2339: Property 'supplier' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/updateApplication.ts(90,18): error TS2339: Property 'tenderApplication' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/updateApplication.ts(229,16): error TS2339: Property 'tenderApplication' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/updateApplication.ts(320,20): error TS2551: Property 'applicationDocument' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'. Did you mean 'solicitationDocument'?
+lib/application/updateApplication.ts(375,7): error TS2559: Type 'string' has no properties in common with type 'UserCreateNestedOneWithoutApplicationActivitiesInput'.
+lib/application/updateApplicationStatus.ts(226,11): error TS2559: Type 'string' has no properties in common with type 'UserCreateNestedOneWithoutApplicationActivitiesInput'.
+lib/application/withdrawApplication.ts(17,7): error TS2367: This comparison appears to be unintentional because the types 'UserRole' and '"SUPPLIER"' have no overlap.
+lib/application/withdrawApplication.ts(22,18): error TS2339: Property 'supplier' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/withdrawApplication.ts(36,18): error TS2339: Property 'tenderApplication' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/application/withdrawApplication.ts(78,16): error TS2339: Property 'tenderApplication' does not exist on type 'Omit<PrismaClient<PrismaClientOptions, never, DefaultArgs>, "$extends" | "$transaction" | "$disconnect" | "$connect" | "$on">'.
+lib/application/withdrawApplication.ts(104,11): error TS2559: Type 'string' has no properties in common with type 'UserCreateNestedOneWithoutApplicationActivitiesInput'.
+lib/awards/award-service.ts(111,5): error TS2353: Object literal may only specify known properties, and 'search' does not exist in type '{ solicitationId?: string | undefined; lotId?: string | undefined; vendorId?: string | undefined; bidId?: string | undefined; status?: AwardStatus | undefined; skip?: number | undefined; take?: number | undefined; }'.
+lib/awards/award-service.ts(121,5): error TS2561: Object literal may only specify known properties, but 'solicitationId' does not exist in type 'AwardCreateInput'. Did you mean to write 'solicitation'?
+lib/awards/award-service.ts(158,5): error TS2561: Object literal may only specify known properties, but 'solicitationId' does not exist in type 'AwardUpdateInput'. Did you mean to write 'solicitation'?
+lib/bids/bid-service.ts(94,10): error TS2554: Expected 2 arguments, but got 1.
+lib/bids/bid-service.ts(106,29): error TS2554: Expected 2 arguments, but got 1.
+lib/bids/bid-service.ts(126,5): error TS2322: Type 'number | null | undefined' is not assignable to type 'string | number | Decimal | DecimalJsLike'.
+  Type 'undefined' is not assignable to type 'string | number | Decimal | DecimalJsLike'.
+lib/bids/bid-service.ts(146,13): error TS2554: Expected 2 arguments, but got 1.
+lib/bids/bid-service.ts(187,5): error TS2322: Type 'number | null | undefined' is not assignable to type 'string | number | Decimal | DecimalJsLike | DecimalFieldUpdateOperationsInput | undefined'.
+  Type 'null' is not assignable to type 'string | number | Decimal | DecimalJsLike | DecimalFieldUpdateOperationsInput | undefined'.
+lib/bids/bid-service.ts(250,5): error TS2353: Object literal may only specify known properties, and 'page' does not exist in type '{ solicitationId?: string | undefined; lotId?: string | undefined; vendorId?: string | undefined; status?: BidStatus | undefined; search?: string | undefined; skip?: number | undefined; take?: number | undefined; }'.
+lib/bids/bid-submission.ts(36,28): error TS2551: Property 'solicitation' does not exist on type '{ id: string; title: string | null; status: BidStatus; createdAt: Date; updatedAt: Date; currencyId: string | null; vendorId: string; solicitationId: string; lotId: string; ... 6 more ...; withdrawalReason: string | null; }'. Did you mean 'solicitationId'?
+lib/bids/bid-submission.ts(99,5): error TS2322: Type 'Decimal' is not assignable to type 'number'.
+lib/bids/bid-submission.ts(132,7): error TS2322: Type 'Decimal' is not assignable to type 'number'.
+lib/bids/bid-submission.ts(216,28): error TS2551: Property 'solicitation' does not exist on type '{ id: string; title: string | null; status: BidStatus; createdAt: Date; updatedAt: Date; currencyId: string | null; vendorId: string; solicitationId: string; lotId: string; ... 6 more ...; withdrawalReason: string | null; }'. Did you mean 'solicitationId'?
+lib/classifications/classification-search.ts(3,37): error TS2307: Cannot find module '@/lib/db/repositories/classification.repository' or its corresponding type declarations.
+lib/classifications/classification-service.ts(12,8): error TS2307: Cannot find module '@/lib/db/repositories/classification.repository' or its corresponding type declarations.
+lib/classifications/classification-service.ts(77,35): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+lib/compliance/compliance-service.ts(8,3): error TS2724: '"@/lib/db/repositories/compliance.repository"' has no exported member named 'findVendorCompliance'. Did you mean 'findVendorComplianceById'?
+lib/compliance/compliance-service.ts(220,5): error TS2345: Argument of type 'CreateComplianceInput' is not assignable to parameter of type 'VendorComplianceCreateInput'.
+  Type 'CreateComplianceInput' is missing the following properties from type 'VendorComplianceCreateInput': vendor, requirement
+lib/compliance/compliance-service.ts(473,7): error TS2353: Object literal may only specify known properties, and 'page' does not exist in type '{ vendorId?: string | undefined; requirementId?: string | undefined; status?: ComplianceStatus | undefined; category?: ComplianceCategory | undefined; skip?: number | undefined; take?: number | undefined; }'.
+lib/compliance/compliance-service.ts(477,26): error TS2339: Property 'data' does not exist on type '({ vendor: { id: string; email: string | null; phone: string | null; createdAt: Date; updatedAt: Date; userId: string; description: string | null; companyName: string; legalName: string | null; ... 10 more ...; verifiedAt: Date | null; }; requirement: { ...; }; document: { ...; } | null; } & { ...; })[]'.
+lib/compliance/compliance-service.ts(480,6): error TS7006: Parameter 'record' implicitly has an 'any' type.
+lib/compliance/compliance-service.ts(518,7): error TS2353: Object literal may only specify known properties, and 'page' does not exist in type '{ vendorId?: string | undefined; requirementId?: string | undefined; status?: ComplianceStatus | undefined; category?: ComplianceCategory | undefined; skip?: number | undefined; take?: number | undefined; }'.
+lib/contracts/contract-payment-service.ts(6,3): error TS2724: '"@/lib/db/repositories/contract.repository"' has no exported member named 'createContractPayment'. Did you mean 'updateContractPayment'?
+lib/contracts/contract-payment-service.ts(7,3): error TS2724: '"@/lib/db/repositories/contract.repository"' has no exported member named 'deleteContractPayment'. Did you mean 'updateContractPayment'?
+lib/contracts/contract-payment-service.ts(9,3): error TS2724: '"@/lib/db/repositories/contract.repository"' has no exported member named 'listContractPayments'. Did you mean 'addContractPayment'?
+lib/contracts/contract-payment-service.ts(11,3): error TS2724: '"@/lib/db/repositories/contract.repository"' has no exported member named 'updateContractPaymentStatus'. Did you mean 'updateContractPayment'?
+lib/contracts/contract-payment-service.ts(264,7): error TS2353: Object literal may only specify known properties, and 'paidAt' does not exist in type 'ContractPaymentUpdateInput'.
+lib/contracts/contract-payment-service.ts(264,23): error TS2339: Property 'paidAt' does not exist on type '{ id: string; status: ContractPaymentStatus; createdAt: Date; updatedAt: Date; currencyId: string | null; amount: Decimal; reference: string | null; contractId: string; notes: string | null; paymentDate: Date | null; }'.
+lib/contracts/contract-payment-service.ts(325,5): error TS2353: Object literal may only specify known properties, and 'paidAt' does not exist in type 'ContractPaymentUpdateInput'.
+lib/contracts/contract-service.ts(207,5): error TS2353: Object literal may only specify known properties, and 'page' does not exist in type 'ListContractsParams'.
+lib/contracts/contract-service.ts(211,39): error TS2339: Property 'data' does not exist on type '({ organization: { name: string; id: string; email: string; phone: string | null; createdAt: Date; updatedAt: Date; description: string | null; currencyId: string | null; legalName: string | null; ... 7 more ...; organizationType: OrganizationType | null; } | null; vendor: { ...; }; award: { ...; }; } & { ...; })[]'.
+lib/contracts/contract-service.ts(212,6): error TS7006: Parameter 'contract' implicitly has an 'any' type.
+lib/contracts/contract-service.ts(223,25): error TS2345: Argument of type 'CreateContractInput' is not assignable to parameter of type 'ContractCreateInput'.
+  Type 'CreateContractInput' is missing the following properties from type 'ContractCreateInput': award, vendor
+lib/contracts/contract-service.ts(252,36): error TS2345: Argument of type 'UpdateContractInput' is not assignable to parameter of type 'ContractUpdateInput'.
+  Types of property 'title' are incompatible.
+    Type 'string | null | undefined' is not assignable to type 'string | StringFieldUpdateOperationsInput | undefined'.
+      Type 'null' is not assignable to type 'string | StringFieldUpdateOperationsInput | undefined'.

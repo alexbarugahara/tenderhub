@@ -1,0 +1,24 @@
+                    TENDERHUB
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+        ▼              ▼              ▼
+   ORGANIZATION     SUPPLIER         ADMIN
+        │              │              │
+        │              │              │
+ Create Tender     Register       Verify Users
+        │              │              │
+ Publish           Profile        Verify Suppliers
+        │              │              │
+ Receive           Verify         Verify Organizations
+ Applications      Account             │
+        │              │           Monitor
+ Evaluate           Browse            │
+        │              │           Moderate
+ Award              Apply             │
+        │              │           Payments
+        │              │           Reports
+        │              │           Audit
+        └──────────────┴──────────────┘
+                       │
+                  TENDERHUB DB
